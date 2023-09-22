@@ -1,4 +1,5 @@
 import express from "express";
+import { isAuthenticated } from "../middlewares/authMiddleware";
 import {
   createCategory,
   getAllCategorys,
@@ -10,12 +11,12 @@ import {
 
 const categoryRouter = express.Router();
 
-categoryRouter.post("/category", createCategory);
-categoryRouter.get("/categorys", getAllCategorys);
-categoryRouter.get("/category/:id", getCategoryById);
+categoryRouter.post("/category", isAuthenticated, createCategory);
+categoryRouter.get("/categorys", isAuthenticated, getAllCategorys);
+categoryRouter.get("/category/:id", isAuthenticated, getCategoryById);
 // Get category by categoryTitle:
-// categoryRouter.get("/category/:categoryTitle", getCategoryByCategoryTitle);
-categoryRouter.put("/category/:id", updateCategoryById);
-categoryRouter.delete("/category/:id", deleteCategoryById);
+// categoryRouter.get("/category/:categoryTitle", isAuthenticated, getCategoryByCategoryTitle);
+categoryRouter.put("/category/:id", isAuthenticated, updateCategoryById);
+categoryRouter.delete("/category/:id", isAuthenticated, deleteCategoryById);
 
 export default categoryRouter;

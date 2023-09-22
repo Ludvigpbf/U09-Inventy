@@ -51,28 +51,6 @@ export const getUserByUsername = async (req: Request, res: Response) => {
   }
 };
 
-// Update a user by ID
-export const updateUserById = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { firstName, lastName, username, email, password } = req.body;
-
-  try {
-    const user = await UserModel.findByIdAndUpdate(
-      id,
-      { username, email, password },
-      { new: true }
-    );
-
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({ error: (error as Error).message });
-  }
-};
-
 // Delete a user by ID
 export const deleteUserById = async (req: Request, res: Response) => {
   const { id } = req.params;

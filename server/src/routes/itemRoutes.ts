@@ -7,15 +7,16 @@ import {
   updateItemById,
   deleteItemById,
 } from "../controllers/itemController";
+import { isAuthenticated } from "../middlewares/authMiddleware";
 
 const itemRouter = express.Router();
 
-itemRouter.post("/item", createItem);
-itemRouter.get("/items", getAllItems);
-itemRouter.get("/item/:id", getItemById);
+itemRouter.post("/item", isAuthenticated, createItem);
+itemRouter.get("/items", isAuthenticated, getAllItems);
+itemRouter.get("/item/:id", isAuthenticated, getItemById);
 // Get item by itemname:
-// itemRouter.get("/item/:itemTitle", getItemByItemTitle);
-itemRouter.put("/item/:id", updateItemById);
-itemRouter.delete("/item/:id", deleteItemById);
+// itemRouter.get("/item/:itemTitle",isAuthenticated, getItemByItemTitle);
+itemRouter.put("/item/:id", isAuthenticated, updateItemById);
+itemRouter.delete("/item/:id", isAuthenticated, deleteItemById);
 
 export default itemRouter;

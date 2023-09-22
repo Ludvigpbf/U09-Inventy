@@ -7,15 +7,16 @@ import {
   updateImageById,
   deleteImageById,
 } from "../controllers/imageController";
+import { isAuthenticated } from "../middlewares/authMiddleware";
 
 const imageRouter = express.Router();
 
-imageRouter.post("/image", createImage);
-imageRouter.get("/images", getAllImages);
-imageRouter.get("/image/:id", getImageById);
+imageRouter.post("/image", isAuthenticated, createImage);
+imageRouter.get("/images", isAuthenticated, getAllImages);
+imageRouter.get("/image/:id", isAuthenticated, getImageById);
 // Get image by imageName:
-// imageRouter.get("/image/:imageTitle", getImageByImageTitle);
-imageRouter.put("/image/:id", updateImageById);
-imageRouter.delete("/image/:id", deleteImageById);
+// imageRouter.get("/image/:imageTitle", isAuthenticated, getImageByImageTitle);
+imageRouter.put("/image/:id", isAuthenticated, updateImageById);
+imageRouter.delete("/image/:id", isAuthenticated, deleteImageById);
 
 export default imageRouter;

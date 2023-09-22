@@ -1,4 +1,5 @@
 import express from "express";
+import { isAuthenticated } from "../middlewares/authMiddleware";
 import {
   createSupplier,
   getAllSuppliers,
@@ -10,12 +11,12 @@ import {
 
 const supplierRouter = express.Router();
 
-supplierRouter.post("/supplier", createSupplier);
-supplierRouter.get("/suppliers", getAllSuppliers);
-supplierRouter.get("/supplier/:id", getSupplierById);
+supplierRouter.post("/supplier", isAuthenticated, createSupplier);
+supplierRouter.get("/suppliers", isAuthenticated, getAllSuppliers);
+supplierRouter.get("/supplier/:id", isAuthenticated, getSupplierById);
 // Get supplier by supplierName:
-// supplierRouter.get("/supplier/:supplierName", getSupplierBySupplierName);
-supplierRouter.put("/supplier/:id", updateSupplierById);
-supplierRouter.delete("/supplier/:id", deleteSupplierById);
+// supplierRouter.get("/supplier/:supplierName",isAuthenticated, getSupplierBySupplierName);
+supplierRouter.put("/supplier/:id", isAuthenticated, updateSupplierById);
+supplierRouter.delete("/supplier/:id", isAuthenticated, deleteSupplierById);
 
 export default supplierRouter;

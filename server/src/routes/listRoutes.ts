@@ -7,15 +7,16 @@ import {
   updateListById,
   deleteListById,
 } from "../controllers/listController";
+import { isAuthenticated } from "../middlewares/authMiddleware";
 
 const listRouter = express.Router();
 
-listRouter.post("/list", createList);
-listRouter.get("/lists", getAllLists);
-listRouter.get("/list/:id", getListById);
+listRouter.post("/list", isAuthenticated, createList);
+listRouter.get("/lists", isAuthenticated, getAllLists);
+listRouter.get("/list/:id", isAuthenticated, getListById);
 // Get list by listname:
-// listRouter.get("/list/:listTitle", getListByListTitle);
-listRouter.put("/list/:id", updateListById);
-listRouter.delete("/list/:id", deleteListById);
+// listRouter.get("/list/:listTitle",isAuthenticated, getListByListTitle);
+listRouter.put("/list/:id", isAuthenticated, updateListById);
+listRouter.delete("/list/:id", isAuthenticated, deleteListById);
 
 export default listRouter;

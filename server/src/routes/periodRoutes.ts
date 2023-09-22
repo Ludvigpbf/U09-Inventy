@@ -1,4 +1,5 @@
 import express from "express";
+import { isAuthenticated } from "../middlewares/authMiddleware";
 import {
   createPeriod,
   getAllPeriods,
@@ -11,13 +12,13 @@ import {
 
 const periodRouter = express.Router();
 
-periodRouter.post("/period", createPeriod);
-periodRouter.get("/periods", getAllPeriods);
-periodRouter.get("/supplier/:id", getPeriodById);
+periodRouter.post("/period", isAuthenticated, createPeriod);
+periodRouter.get("/periods", isAuthenticated, getAllPeriods);
+periodRouter.get("/supplier/:id", isAuthenticated, getPeriodById);
 // Get supplier by periodTitle:
-// periodRouter.get("/period/:periodTitle", getPeriodByPeriodTitle);
-periodRouter.put("/period/:id", updatePeriodById);
-periodRouter.delete("/period/:id", deletePeriodById);
-periodRouter.delete("/periods/delete", deletePeriodsByIds);
+// periodRouter.get("/period/:periodTitle",isAuthenticated, getPeriodByPeriodTitle);
+periodRouter.put("/period/:id", isAuthenticated, updatePeriodById);
+periodRouter.delete("/period/:id", isAuthenticated, deletePeriodById);
+periodRouter.delete("/periods/delete", isAuthenticated, deletePeriodsByIds);
 
 export default periodRouter;

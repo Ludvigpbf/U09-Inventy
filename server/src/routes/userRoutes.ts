@@ -4,7 +4,6 @@ import {
   getAllUsers,
   //getUserByUsername, use if getting user with username instead of ID
   getUserById,
-  updateUserById,
   deleteUserById,
 } from "../controllers/userController";
 
@@ -15,7 +14,6 @@ userRouter.get("/users", getAllUsers);
 userRouter.get("/user/:id", getUserById);
 // Get user by username:
 // userRouter.get("/user/:username", getUserByUsername);
-userRouter.put("/user/:id", updateUserById);
 userRouter.delete("/user/:id", deleteUserById);
 
 export default userRouter;

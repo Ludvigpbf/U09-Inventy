@@ -1,4 +1,5 @@
 import express from "express";
+import { isAuthenticated } from "../middlewares/authMiddleware";
 import {
   createSection,
   getAllSections,
@@ -10,12 +11,12 @@ import {
 
 const sectionRouter = express.Router();
 
-sectionRouter.post("/section", createSection);
-sectionRouter.get("/sections", getAllSections);
-sectionRouter.get("/section/:id", getSectionById);
+sectionRouter.post("/section", isAuthenticated, createSection);
+sectionRouter.get("/sections", isAuthenticated, getAllSections);
+sectionRouter.get("/section/:id", isAuthenticated, getSectionById);
 // Get section by sectionName:
-// sectionRouter.get("/section/:sectionTitle", getSectionBySectionTitle);
-sectionRouter.put("/section/:id", updateSectionById);
-sectionRouter.delete("/section/:id", deleteSectionById);
+// sectionRouter.get("/section/:sectionTitle",isAuthenticated, getSectionBySectionTitle);
+sectionRouter.put("/section/:id", isAuthenticated, updateSectionById);
+sectionRouter.delete("/section/:id", isAuthenticated, deleteSectionById);
 
 export default sectionRouter;
