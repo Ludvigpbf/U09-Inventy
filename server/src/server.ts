@@ -3,6 +3,7 @@ import cors from "cors";
 import mongoose from "./db";
 import multer from "multer";
 
+import authRouter from "./routes/authRoutes";
 import userRouter from "./routes/userRoutes";
 import listRouter from "./routes/listRoutes";
 import itemRouter from "./routes/itemRoutes";
@@ -44,6 +45,7 @@ app.listen(port, () => {
   console.log(`running on port ${port}`);
 });
 
+app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.use("/list", listRouter);
 app.use("/item", itemRouter);
