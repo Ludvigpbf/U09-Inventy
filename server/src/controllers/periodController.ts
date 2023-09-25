@@ -108,7 +108,7 @@ export const deletePeriodById = async (req: Request, res: Response) => {
 
 // Delete multiple periods by IDs
 export const deletePeriodsByIds = async (req: Request, res: Response) => {
-  const { ids } = req.body; // Assuming that you send an array of period IDs in the request body
+  const { ids } = req.body;
 
   try {
     const deletedPeriods = await PeriodModel.deleteMany({ _id: { $in: ids } });

@@ -1,22 +1,52 @@
 import express from "express";
-import { isAuthenticated } from "../middlewares/authMiddleware";
+import {
+  isAuthenticated,
+  isAuthorizedAllResources,
+  isAuthorizedById,
+  isAuthorizedByTitle,
+} from "../middlewares/authMiddleware";
 import {
   createSection,
   getAllSections,
-  //getSectionBySectionName, use if getting Section with SectionName instead of ID
+  getSectionBySectionTitle,
   getSectionById,
   updateSectionById,
   deleteSectionById,
 } from "../controllers/sectionController";
+import SectionModel from "../models/Section";
 
 const sectionRouter = express.Router();
 
 sectionRouter.post("/section", isAuthenticated, createSection);
-sectionRouter.get("/sections", isAuthenticated, getAllSections);
-sectionRouter.get("/section/:id", isAuthenticated, getSectionById);
-// Get section by sectionName:
-// sectionRouter.get("/section/:sectionTitle",isAuthenticated, getSectionBySectionTitle);
-sectionRouter.put("/section/:id", isAuthenticated, updateSectionById);
-sectionRouter.delete("/section/:id", isAuthenticated, deleteSectionById);
+sectionRouter.get(
+  "/sections",
+  isAuthenticated,
+  isAuthorizedAllResources(SectionModel),
+  getAllSections
+);
+sectionRouter.get(
+  "/section/:id",
+  isAuthenticated,
+  isAuthorizedById(SectionModel),
+  getSectionById
+);
+sectionRouter.get(
+  "/section/title/:sectionTitle",
+  isAuthenticated,
+  isAuthorizedByTitle(SectionModel, "sectionTitle"),
+  getSectionBySectionTitle
+);
+sectionRouter.put(
+  "/section/:id",
+  isAuthenticated,
+  isAuthorizedById(SectionModel),
+  updateSectionById
+);
+sectionRouter.delete(
+  "/section/:id",
+  isAuthenticated,
+  isAuthorizedById(SectionModel),
+  deleteSectionById
+);
 
 export default sectionRouter;

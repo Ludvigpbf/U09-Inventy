@@ -1,17 +1,30 @@
 import express from "express";
 import {
   createUser,
-  getAllUsers,
-  //getUserByUsername, use if getting user with username instead of ID
   getUserById,
+  getUserByUsername,
 } from "../controllers/userController";
+import {
+  isAuthenticated,
+  isAuthorizedById,
+  isAuthorizedByTitle,
+} from "../middlewares/authMiddleware";
+import UserModel from "../models/User";
 
 const userRouter = express.Router();
 
 userRouter.post("/user", createUser);
-userRouter.get("/users", getAllUsers);
-userRouter.get("/user/:id", getUserById);
-// Get user by username:
-// userRouter.get("/user/:username", getUserByUsername);
+userRouter.get(
+  "/user/:id",
+  isAuthenticated,
+  isAuthorizedById(UserModel),
+  getUserById
+);
+userRouter.get(
+  "/user/company/:username",
+  isAuthenticated,
+  isAuthorizedByTitle(UserModel, "companyName"),
+  getUserByUsername
+);
 
 export default userRouter;

@@ -3,7 +3,6 @@ import ListModel from "../models/List"; // Import the List model
 
 // Create a new list
 export const createList = async (req: Request, res: Response) => {
-  // Create a new list using the ListModel and request body data
   try {
     const newList = await ListModel.create(req.body);
     res.status(201).json(newList);
@@ -12,11 +11,13 @@ export const createList = async (req: Request, res: Response) => {
   }
 };
 
-// Read all lists
 export const getAllLists = async (req: Request, res: Response) => {
   try {
-    const list = await ListModel.find();
-    res.json(list);
+    const ownedLists = (req as any).ownedResources.filter((resource: any) => {
+      return resource instanceof ListModel;
+    });
+
+    res.json(ownedLists);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }
@@ -42,10 +43,14 @@ export const getListByListTitle = async (req: Request, res: Response) => {
   const { listTitle } = req.params;
 
   try {
-    const list = await ListModel.findOne({ listTitle });
+    const decodedListTitle = decodeURIComponent(listTitle);
+
+    const list = await ListModel.findOne({ listTitle: decodedListTitle });
+
     if (!list) {
       return res.status(404).json({ error: "List not found" });
     }
+
     res.json(list);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });

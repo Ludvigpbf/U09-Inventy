@@ -1,22 +1,52 @@
 import express from "express";
-import { isAuthenticated } from "../middlewares/authMiddleware";
+import {
+  isAuthenticated,
+  isAuthorizedAllResources,
+  isAuthorizedById,
+  isAuthorizedByTitle,
+} from "../middlewares/authMiddleware";
 import {
   createCategory,
   getAllCategorys,
-  //getCategoryByCategoryTitle, use if getting Category with CategoryTitle instead of ID
+  getCategoryByCategoryTitle,
   getCategoryById,
   updateCategoryById,
   deleteCategoryById,
 } from "../controllers/categoryController";
+import CategoryModel from "../models/Category";
 
 const categoryRouter = express.Router();
 
 categoryRouter.post("/category", isAuthenticated, createCategory);
-categoryRouter.get("/categorys", isAuthenticated, getAllCategorys);
-categoryRouter.get("/category/:id", isAuthenticated, getCategoryById);
-// Get category by categoryTitle:
-// categoryRouter.get("/category/:categoryTitle", isAuthenticated, getCategoryByCategoryTitle);
-categoryRouter.put("/category/:id", isAuthenticated, updateCategoryById);
-categoryRouter.delete("/category/:id", isAuthenticated, deleteCategoryById);
+categoryRouter.get(
+  "/categories",
+  isAuthenticated,
+  isAuthorizedAllResources(CategoryModel),
+  getAllCategorys
+);
+categoryRouter.get(
+  "/category/:id",
+  isAuthenticated,
+  isAuthorizedById(CategoryModel),
+  getCategoryById
+);
+categoryRouter.get(
+  "/category/title/:categoryTitle",
+  isAuthenticated,
+  isAuthorizedByTitle(CategoryModel, "categoryTitle"),
+  getCategoryByCategoryTitle
+);
+categoryRouter.put(
+  "/category/:id",
+  isAuthenticated,
+  isAuthorizedById(CategoryModel),
+  updateCategoryById
+);
+categoryRouter.delete(
+  "/category/:id",
+  isAuthenticated,
+  isAuthorizedById(CategoryModel),
+  deleteCategoryById
+);
 
 export default categoryRouter;

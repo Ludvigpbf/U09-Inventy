@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import UserModel from "../models/User";
+import User from "../models/User";
 
 // Create a new user
 export const createUser = async (req: Request, res: Response) => {
@@ -8,16 +9,6 @@ export const createUser = async (req: Request, res: Response) => {
     res.status(201).json(newUser);
   } catch (error) {
     res.status(400).json({ error: (error as Error).message });
-  }
-};
-
-// Read all users
-export const getAllUsers = async (req: Request, res: Response) => {
-  try {
-    const users = await UserModel.find();
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ error: (error as Error).message });
   }
 };
 
@@ -51,19 +42,22 @@ export const getUserByUsername = async (req: Request, res: Response) => {
   }
 };
 
-// Delete a user by ID
-export const deleteUserById = async (req: Request, res: Response) => {
-  const { id } = req.params;
-
+// Delete User
+export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const user = await UserModel.findByIdAndDelete(id);
+    const { companyId } = (req as any).user;
+
+    const user = await User.findById(companyId);
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
-    res.json(user);
+    await User.deleteOne({ _id: user._id });
+
+    res.json({ message: "User deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message });
+    console.error("Error deleting user:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
