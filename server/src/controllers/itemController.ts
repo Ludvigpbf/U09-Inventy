@@ -175,4 +175,4 @@ export const deleteMultipleItems = async (req: Request, res: Response) => {
   }
 };
 
-// insertMany, deleteMany, copyOne, copyMany
+// insertMany, copyOne, copyMany

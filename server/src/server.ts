@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import mongoose from "./db";
 import multer from "multer";
+import dotenv from "dotenv";
 
 import authRouter from "./routes/authRoutes";
 import userRouter from "./routes/userRoutes";
@@ -13,6 +14,8 @@ import imageRouter from "./routes/imageRoutes";
 import periodRouter from "./routes/periodRoutes";
 import categoryRouter from "./routes/categoryRoutes";
 import planRouter from "./routes/planRoutes";
+
+dotenv.config();
 
 const app = express();
 
