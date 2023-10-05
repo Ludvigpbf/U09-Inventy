@@ -1,8 +1,9 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
-import { Pressable, useColorScheme } from "react-native";
+import { Pressable, View, useColorScheme } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
+import ModalScreen from "../Modal";
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -20,24 +21,28 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        /* tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint, */
+        tabBarActiveTintColor: "#FF9933",
       }}
     >
       <Tabs.Screen
-        name="three"
+        name="period"
         options={{
           title: "Inventory",
+
+          headerTitleAlign: "center",
           tabBarIcon: ({ color }) => (
-            <Ionicons name="ios-clipboard-outline" size={24} color="black" />
+            <Ionicons name="ios-clipboard-outline" size={24} color={color} />
           ),
           headerRight: () => (
-            <Link href="/modal" asChild>
+            <Link href="/Modal" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <Ionicons
                     name="ios-menu-outline"
                     size={24}
-                    color={Colors[colorScheme ?? "light"].text}
+                    /*  color={Colors[colorScheme ?? "light"].text} */
+                    color={"black"}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                   />
                 )}
@@ -46,53 +51,117 @@ export default function TabLayout() {
           ),
         }}
       />
+      {
+        <Tabs.Screen
+          name="items"
+          options={{
+            title: "Items",
+            headerTitleAlign: "center",
+            tabBarIcon: ({ color }) => (
+              <Ionicons name="ios-cube-outline" size={24} color={color} />
+            ),
+            headerRight: () => (
+              <Link href="/ModalScreen" asChild>
+                <Pressable>
+                  {({ pressed }) => (
+                    <FontAwesome
+                      name="info-circle"
+                      size={25}
+                      /* color={Colors[colorScheme ?? "light"].text} */
+                      color={"black"}
+                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                    />
+                  )}
+                </Pressable>
+              </Link>
+            ),
+          }}
+        />
+      }
       <Tabs.Screen
-        name="two"
-        options={{
-          title: "Items",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="ios-cube-outline" size={24} color="black" />
-          ),
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? "light"].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="home"
+        name="[company]"
         options={{
           title: "Dashboard",
+          headerTitleAlign: "center",
           tabBarIcon: ({ color }) => (
-            <Ionicons name="ios-home-outline" size={24} color="black" />
+            <Ionicons name="ios-home-outline" size={24} color={color} />
+          ),
+          headerRight: () => (
+            <Link href="/AccountSettings" asChild>
+              <Pressable>
+                {({ pressed }) => (
+                  <Ionicons
+                    name="ios-menu-outline"
+                    size={24}
+                    /*  color={Colors[colorScheme ?? "light"].text} */
+                    color={"black"}
+                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                  />
+                )}
+              </Pressable>
+            </Link>
           ),
         }}
       />
+
       <Tabs.Screen
-        name="four"
+        name="statistics"
         options={{
-          title: "Stats",
+          title: "Statistics",
+          headerTitleAlign: "center",
           tabBarIcon: ({ color }) => (
-            <Ionicons name="ios-stats-chart-outline" size={24} color="black" />
+            <Ionicons name="ios-stats-chart-outline" size={24} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="five"
+        name="settings"
         options={{
           title: "Settings",
+          headerTitleAlign: "center",
           tabBarIcon: ({ color }) => (
-            <Ionicons name="ios-settings-outline" size={24} color="black" />
+            <Ionicons name="ios-settings-outline" size={24} color={color} />
+          ),
+          headerLeft: () => (
+            <>
+              <Pressable>
+                {({ pressed }) => (
+                  <Ionicons
+                    name="ios-moon-outline"
+                    size={20}
+                    /* color={Colors[colorScheme ?? "light"].text} */
+                    color={"black"}
+                    style={{ marginLeft: 15, opacity: pressed ? 0.5 : 1 }}
+                  />
+                )}
+              </Pressable>
+              <Pressable>
+                {({ pressed }) => (
+                  <Ionicons
+                    name="ios-sunny-outline"
+                    size={20}
+                    /* color={Colors[colorScheme ?? "light"].text} */
+                    color={"black"}
+                    style={{ marginLeft: 15, opacity: pressed ? 0.5 : 1 }}
+                  />
+                )}
+              </Pressable>
+            </>
+          ),
+          headerRight: () => (
+            <Link href="/Modal" asChild>
+              <Pressable>
+                {({ pressed }) => (
+                  <Ionicons
+                    name="ios-menu-outline"
+                    size={24}
+                    /*   color={Colors[colorScheme ?? "light"].text} */
+                    color={"black"}
+                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                  />
+                )}
+              </Pressable>
+            </Link>
           ),
         }}
       />

@@ -19,6 +19,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
 
   const handleLogin = async () => {
     try {
+      console.log("Logging in with credentials:", { company, password });
       // Call the login function from your API module
       const response = await login({ company, password });
 

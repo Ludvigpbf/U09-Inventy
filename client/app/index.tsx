@@ -1,29 +1,28 @@
 import { StatusBar } from "expo-status-bar";
-import { Platform, Image, StyleSheet } from "react-native";
+import { Platform, Image, StyleSheet, View, Text } from "react-native";
 
-import { Text, View } from "../components/Themed";
+/* import { Text, View } from "../components/Themed"; */
 import LoginForm from "../components/LoginForm";
-import { login } from "./../api/authApi";
-import { useNavigation } from "@react-navigation/native";
-import { router } from "expo-router";
+import { login } from "../api/authApi";
+import { Link, router } from "expo-router";
 
 export default function LandingScreen() {
-  const navigation = useNavigation();
-
-  const handleLogin = async (credentials: {
+  /*  const handleLogin = async (credentials: {
     company: string;
     password: string;
   }) => {
     console.log("success");
-    router.replace("/home");
-  };
+    router.replace("/Omaka");
+  }; */
 
   return (
     <View style={styles.container}>
       <Image source={require("../assets/images/inventy.png")} />
       <Text>Login</Text>
-      <LoginForm onLogin={handleLogin} />
-
+      {/*  <LoginForm onLogin={handleLogin} /> */}
+      <Link href="/Omaka" style={styles.link}>
+        Login
+      </Link>
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
     </View>
@@ -44,5 +43,12 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: "80%",
+  },
+  link: {
+    fontSize: 20,
+    marginVertical: 10,
+    fontWeight: "bold",
+    textDecorationStyle: "solid",
+    cursor: "pointer",
   },
 });
