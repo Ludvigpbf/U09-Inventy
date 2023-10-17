@@ -24,8 +24,8 @@ itemRouter.post("/item", isAuthenticated, createItem);
 itemRouter.post("/items", isAuthenticated, createMultipleItems);
 itemRouter.get(
   "/items",
-  isAuthenticated,
-  isAuthorizedAllResources(ItemModel),
+  /* isAuthenticated,
+  isAuthorizedAllResources(ItemModel), */
   getAllItems
 );
 itemRouter.get(
@@ -56,8 +56,8 @@ itemRouter.put(
 );
 itemRouter.delete(
   "/item/:id",
-  isAuthenticated,
-  isAuthorizedById(ItemModel),
+  /*   isAuthenticated,
+  isAuthorizedById(ItemModel), */
   deleteItemById
 );
 

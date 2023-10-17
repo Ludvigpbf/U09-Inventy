@@ -19,30 +19,26 @@ const Dashboard = () => {
       <View style={styles.containerRow}>
         <Text>{company}'s Dashboard</Text>
         <View style={styles.btnsContainer}>
-          <Link href="/period/lists/NewList" style={styles.btn}>
-            <Text style={styles.btnText}>New List</Text>
-          </Link>
-          <Link href="/period/lists/NewList" style={styles.btn}>
-            <Text style={styles.btnText}>New List</Text>
-          </Link>
-          <Link href="/period/lists/NewList" style={styles.btn}>
-            <Text style={styles.btnText}>New List</Text>
-          </Link>
-          <Link href="/period/lists/NewList" style={styles.btn}>
-            <Text style={styles.btnText}>New List</Text>
-          </Link>
-          <Link href="/period/lists/NewList" style={styles.btn}>
-            <Text style={styles.btnText}>New List</Text>
-          </Link>
-          <Link href="/period/lists/NewList" style={styles.btn}>
-            <Text style={styles.btnText}>New List</Text>
-          </Link>
-          <Link href="/period/lists/NewList" style={styles.btn}>
-            <Text style={styles.btnText}>New List</Text>
-          </Link>
-          <Link href="/period/lists/NewList" style={styles.btn}>
-            <Text style={styles.btnText}>New List</Text>
-          </Link>
+          <View>
+            <Link href="/period/Index" style={styles.btn}></Link>
+            <Text style={styles.btnText}>Periods</Text>
+          </View>
+          <View>
+            <Link href="/period/lists/Index" style={styles.btn}></Link>
+            <Text style={styles.btnText}>Lists</Text>
+          </View>
+          <View>
+            <Link href="/items/Items" style={styles.btn}></Link>
+            <Text style={styles.btnText}>Items</Text>
+          </View>
+          <View>
+            <Link href="/statistics/Statistic" style={styles.btn}></Link>
+            <Text style={styles.btnText}>Statistics</Text>
+          </View>
+          <View>
+            <Link href="/settings/Index" style={styles.btn}></Link>
+            <Text style={styles.btnText}>Settings</Text>
+          </View>
         </View>
         <View style={styles.container2}>
           <Text>Some Information</Text>
