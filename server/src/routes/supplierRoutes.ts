@@ -20,8 +20,8 @@ const supplierRouter = express.Router();
 supplierRouter.post("/supplier", isAuthenticated, createSupplier);
 supplierRouter.get(
   "/suppliers",
-  isAuthenticated,
-  isAuthorizedAllResources(SupplierModel),
+  /* isAuthenticated,
+  isAuthorizedAllResources(SupplierModel), */
   getAllSuppliers
 );
 supplierRouter.get(

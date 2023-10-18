@@ -6,45 +6,74 @@ import {
   FlatList,
   Modal,
   Pressable,
+  TextInput,
 } from "react-native";
 import Checkbox from "expo-checkbox";
 
 import axios from "axios";
 import { API_BASE_URL } from "../../../api/authApi";
+import { fetchItems, deleteItems } from "../../../api/itemApi";
 import { Item } from "../../../interfaces/itemInterface";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Link } from "expo-router";
 
-const Items = () => {
+const MyItems = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [isItemsCheckedMenuVisible, setItemsCheckedMenuVisible] =
     useState(false);
-  const [isCheckboxChecked, setCheckboxChecked] = useState(false);
   const [isItemMenuVisible, setItemMenuVisible] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]); // Assuming _id is of string type
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectAllChecked, setSelectAllChecked] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  /*   const [selectedItemForEdit, setSelectedItemForEdit] = useState<string>(null); */
+
+  const handleSearch = (text: string) => {
+    setSearchQuery(text);
+  };
 
   const toggleItemSelection = (itemId: string) => {
+    // Check if the item is already selected
     if (selectedItems.includes(itemId)) {
       // If the item is already selected, remove it
-
-      setSelectedItems(selectedItems.filter((id) => id !== itemId));
+      const updatedSelectedItems = selectedItems.filter((id) => id !== itemId);
+      setSelectedItems(updatedSelectedItems);
+      console.log(updatedSelectedItems); // Log the updated items
+      setSelectAllChecked(updatedSelectedItems.length === items.length);
     } else {
-      setSelectedItems([...selectedItems, itemId]);
+      // If the item is not selected, add it
+      const updatedSelectedItems = [...selectedItems, itemId];
+      setSelectedItems(updatedSelectedItems);
+      console.log(updatedSelectedItems); // Log the updated items
+      setSelectAllChecked(updatedSelectedItems.length === items.length);
     }
   };
 
+  const toggleSelectAll = () => {
+    if (selectAllChecked) {
+      setSelectedItems([]); // Deselect all items
+    } else {
+      const allItemIds = items.map((item) => item._id);
+      setSelectedItems(allItemIds); // Select all items
+    }
+    setSelectAllChecked(!selectAllChecked); // Toggle "Select All" checkbox state
+  };
+
   const handleDeleteItem = (ids: string | string[]) => {
+    console.log("Selected items for deletion:", selectedItems);
     if (Array.isArray(ids)) {
-      // Handle multiple item deletions
-      Promise.all(
-        ids.map(
-          (id) => axios.delete(`${API_BASE_URL}/item/item/${id}`).then(() => id) // Return the deleted ID on success
-        )
-      )
-        .then((deletedIds) => {
-          // Remove the deleted items from the local state
-          setItems((prevItems) =>
-            prevItems.filter((item) => !deletedIds.includes(item._id))
-          );
+      deleteItems(ids)
+        .then((deletedItems) => {
+          console.log("Items deleted successfully:", deletedItems);
+          // Fetch items again to update the local state
+          fetchItems()
+            .then((data: Item[]) => {
+              setItems(data as Item[]);
+              console.log(data);
+            })
+            .catch((error) => {
+              console.error("Error fetching items:", error);
+            });
         })
         .catch((error) => {
           console.error("Error deleting items:", error);
@@ -52,7 +81,7 @@ const Items = () => {
     } else {
       // Handle single item deletion
       axios
-        .delete(`${API_BASE_URL}/item/${ids}`)
+        .delete(`${API_BASE_URL}/item/item/${ids}`)
         .then(() => {
           // Remove the deleted item from the local state
           setItems((prevItems) => prevItems.filter((item) => item._id !== ids));
@@ -63,18 +92,21 @@ const Items = () => {
     }
   };
 
+  const filteredItems = items.filter((item) =>
+    item.itemTitle.toLowerCase().startsWith(searchQuery.toLowerCase())
+  );
+
   const handleAddToList = () => {
     // Handle the add to list action here
     setItemsCheckedMenuVisible(false); // Close the menu
   };
 
   useEffect(() => {
-    // Make an API request to fetch the items
-    axios
-      .get(`${API_BASE_URL}/item/items`) // Replace with your actual API endpoint
-      .then((response) => {
-        setItems(response.data as Item[]);
-        console.log(response.data);
+    // Fetch items when the component mounts
+    fetchItems()
+      .then((data: Item[]) => {
+        setItems(data as Item[]);
+        console.log(data);
       })
       .catch((error) => {
         console.error("Error fetching items:", error);
@@ -83,25 +115,29 @@ const Items = () => {
 
   return (
     <View style={styles.container}>
-      {!isCheckboxChecked && (
+      <View style={styles.topMenu}>
         <View style={styles.menuContainer}>
-          <Pressable onPress={() => handleDeleteItem(selectedItems)}>
-            <Text>Delete</Text>
-          </Pressable>
-          <Pressable onPress={handleAddToList}>
-            <Text>Add to Lists</Text>
-          </Pressable>
+          <Checkbox value={selectAllChecked} onValueChange={toggleSelectAll} />
+          <Text style={styles.selectAllText}>Select all</Text>
         </View>
-      )}
-      <Text>Items screen</Text>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search items"
+          value={searchQuery}
+          onChangeText={handleSearch}
+        />
+        <Link href="/items/NewItem" style={styles.newItemBtn}>
+          New Item
+          <Ionicons name="ios-add-circle-outline" size={16} color="black" />
+        </Link>
+      </View>
       <FlatList
         style={styles.itemList}
-        data={items}
-        keyExtractor={(item) => item._id} // Replace with the actual item ID field
+        data={filteredItems}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <View style={styles.itemContainer}>
             <View style={styles.chooseContainer}>
-              {" "}
               <Checkbox
                 value={selectedItems.includes(item._id)}
                 onValueChange={() => toggleItemSelection(item._id)}
@@ -119,7 +155,12 @@ const Items = () => {
               <Text>{item.itemUnit}</Text>
             </View>
             <View style={styles.itemOptionsContainer}>
-              <Pressable onPress={() => setItemMenuVisible(true)}>
+              <Pressable
+                onPress={() => {
+                  setItemMenuVisible(true);
+                  /* setSelectedItemForEdit(item._id); */
+                }}
+              >
                 <MaterialCommunityIcons
                   name="dots-vertical"
                   size={24}
@@ -134,14 +175,21 @@ const Items = () => {
             >
               <View style={styles.modalContainer}>
                 {/* Your menu options go here */}
-                <Pressable style={styles.modalContent}>
+                <Link
+                  href={{
+                    pathname: "/items/UpdateItem",
+
+                    params: { selectedItemId: item._id },
+                  }}
+                  style={styles.modalContent}
+                >
                   <Ionicons
                     name="ios-arrow-forward-circle-outline"
                     size={24}
                     color="white"
                   />
                   <Text style={styles.modalText}>Edit item</Text>
-                </Pressable>
+                </Link>
                 <Pressable style={styles.modalContent}>
                   <Ionicons
                     name="ios-arrow-forward-circle-outline"
@@ -154,7 +202,7 @@ const Items = () => {
                   <Ionicons
                     style={styles.closeBtn}
                     name="ios-close-circle-outline"
-                    size={24}
+                    size={52}
                     color="white"
                   />
                 </Pressable>
@@ -163,6 +211,16 @@ const Items = () => {
           </View>
         )}
       />
+      {selectedItems.length > 0 ? (
+        <View style={styles.menuContainer}>
+          <Pressable onPress={() => handleDeleteItem(selectedItems)}>
+            <Text style={styles.dropdownBtn}>Delete</Text>
+          </Pressable>
+          <Pressable onPress={handleAddToList}>
+            <Text style={styles.dropdownBtn}>Add to Lists</Text>
+          </Pressable>
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -177,7 +235,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     backgroundColor: "#dfdfdf",
     borderRadius: 10,
-    margin: 10,
+    margin: 5,
     padding: 10,
     flex: 1,
     flexDirection: "row",
@@ -186,7 +244,8 @@ const styles = StyleSheet.create({
     minHeight: 60,
   },
   itemList: {
-    width: 330,
+    width: 310,
+    zIndex: -1,
   },
   itemTitle: {
     fontWeight: "bold",
@@ -236,14 +295,59 @@ const styles = StyleSheet.create({
   },
   menuContainer: {
     zIndex: 1,
-    backgroundColor: "white",
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "gray",
     padding: 10,
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
+  },
+  dropdownBtn: {
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "gray",
+    margin: 5,
+    padding: 10,
+    width: 100,
+    textAlign: "center",
+  },
+  newItemBtn: {
+    display: "flex",
+    alignItems: "center",
+    margin: 10,
+    fontSize: 10,
+  },
+  topMenu: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-end",
+    width: 330,
+    justifyContent: "space-between",
+    padding: 10,
+  },
+  selectAllText: {
+    marginLeft: 5,
+    fontSize: 10,
+  },
+  searchInput: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    paddingLeft: 10,
+  },
+  suggestionsContainer: {
+    position: "absolute",
+    top: 40, // Adjust this value for proper positioning
+    left: 10,
+    width: 200, // Adjust the width as needed
+    backgroundColor: "white",
+    borderColor: "gray",
+    borderWidth: 1,
+    zIndex: 2,
+  },
+  suggestionText: {
+    padding: 5,
+    borderBottomColor: "gray",
+    borderBottomWidth: 1,
   },
 });
 
-export default Items;
+export default MyItems;

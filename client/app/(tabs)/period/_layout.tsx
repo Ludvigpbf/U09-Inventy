@@ -4,7 +4,7 @@ export default () => {
   return (
     <Stack>
       <Stack.Screen
-        name="index"
+        name="Index"
         options={{ headerShown: false }}
       ></Stack.Screen>
     </Stack>

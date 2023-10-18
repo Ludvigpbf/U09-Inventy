@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-const Lists = () => {
+const Terms = () => {
   return (
     <View>
-      <Text>Lists Page</Text>
+      <Text>Terms</Text>
     </View>
   );
 };
 
-export default Lists;
+export default Terms;
 
 const styles = StyleSheet.create({});

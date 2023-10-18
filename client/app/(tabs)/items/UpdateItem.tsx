@@ -13,42 +13,29 @@ interface SupplierOption {
   _id: string;
   supplierName: string;
 }
+interface UpdateItemProps {
+  itemId: string; // Define the type for the itemId prop
+}
 
-const NewItem = () => {
+// Assuming you have a prop called 'itemId' to specify the item to be updated
+const UpdateItem: React.FC<UpdateItemProps> = ({ itemId }) => {
   // State variables for input fields
-
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [sku, setSKU] = useState<string>("");
-  const [supplier, setSupplier] = useState<string>("");
-  const [quantity, setQuantity] = useState<string>("");
-  const [unit, setUnit] = useState<string>("");
-  const [price, setPrice] = useState<string>("");
-  const [image, setImage] = useState<string>("");
-  const [category, setCategory] = useState<string>("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [sku, setSKU] = useState("");
+  const [supplier, setSupplier] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [unit, setUnit] = useState("");
+  const [price, setPrice] = useState("");
+  const [image, setImage] = useState("");
+  const [category, setCategory] = useState("");
 
   const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
   const [supplierOptions, setSupplierOptions] = useState<SupplierOption[]>([]);
 
-  const unitOptions = [
-    "st",
-    "kg",
-    "g",
-    "mg",
-    "l",
-    "dl",
-    "cl",
-    "ml",
-    "knippe",
-    "fl",
-    "dunk",
-    "låda",
-    "kolli",
-    "säck",
-    "pkt",
-  ];
+  const unitOptions = ["st", "kg", "g", "ml", "l", "dl"];
 
-  const newItemData = {
+  const updateItemData = {
     itemTitle: title,
     itemDescription: description,
     itemSKU: sku,
@@ -57,26 +44,38 @@ const NewItem = () => {
     itemUnit: unit,
     itemPrice: price,
     itemCategory: category,
-    ownedBy: "650d97b2f719f5bc7e80dcd5",
   };
 
   // Event handler for form submission
-  const handleSubmit = () => {
-    // You can submit the form data to your API or perform any other actions here
-    console.log(newItemData);
-
+  const handleUpdate = () => {
+    // You can submit the updated data to your API or perform any other actions here
     axios
-      .post(`${API_BASE_URL}/item/item`, newItemData)
+      .put(`${API_BASE_URL}/item/item/${itemId}`, updateItemData)
       .then((response) => {
-        console.log("Item added successfully:", response.data);
-        // You can add further logic here, e.g., clearing input fields or navigating to another screen.
+        console.log("Item updated successfully:", response.data);
+        // You can add further logic here, e.g., navigating back to the item details screen.
       })
       .catch((error) => {
-        console.error("Error adding item:", error);
+        console.error("Error updating item:", error);
       });
   };
 
   useEffect(() => {
+    // Fetch the item's details from the API using 'itemId'
+    axios.get(`${API_BASE_URL}/item/item/${itemId}`).then((response) => {
+      const itemData = response.data;
+      // Populate the input fields with item details
+      setTitle(itemData.itemTitle);
+      setDescription(itemData.itemDescription);
+      setSKU(itemData.itemSKU);
+      setSupplier(itemData.itemSupplier);
+      setQuantity(itemData.itemQuantity);
+      setUnit(itemData.itemUnit);
+      setPrice(itemData.itemPrice);
+      setImage(itemData.itemImage); // Assuming you have an item image field
+      setCategory(itemData.itemCategory);
+    });
+
     // Fetch category options from the API
     axios.get(`${API_BASE_URL}/category/categories`).then((response) => {
       setCategoryOptions(response.data);
@@ -86,25 +85,22 @@ const NewItem = () => {
     axios.get(`${API_BASE_URL}/supplier/suppliers`).then((response) => {
       setSupplierOptions(response.data);
     });
-  }, []);
+  }, [itemId]);
 
   return (
     <View style={styles.container}>
-      <Text>Title</Text>
       <TextInput
         style={styles.input}
         placeholder="Title"
         value={title}
         onChangeText={(text) => setTitle(text)}
       />
-      <Text>Description</Text>
       <TextInput
         style={styles.input}
         placeholder="Description"
         value={description}
         onChangeText={(text) => setDescription(text)}
       />
-      <Text>SKU</Text>
       <TextInput
         style={styles.input}
         placeholder="SKU"
@@ -119,14 +115,13 @@ const NewItem = () => {
         >
           {supplierOptions.map((supplierOption) => (
             <Picker.Item
-              label={supplierOption.supplierName} // Adjust this based on your API response structure
-              value={supplierOption._id} // Adjust this based on your API response structure
-              key={supplierOption._id} // Use the 'id' property as the unique key
+              label={supplierOption.supplierName}
+              value={supplierOption._id}
+              key={supplierOption._id}
             />
           ))}
         </Picker>
       </View>
-      <Text>Quantity</Text>
       <TextInput
         style={styles.input}
         placeholder="Quantity"
@@ -149,7 +144,6 @@ const NewItem = () => {
           ))}
         </Picker>
       </View>
-      <Text>Price</Text>
       <TextInput
         style={styles.input}
         placeholder="Price"
@@ -157,7 +151,6 @@ const NewItem = () => {
         onChangeText={(text) => setPrice(text)}
         keyboardType="numeric"
       />
-      <Text>Image</Text>
       <TextInput
         style={styles.input}
         placeholder="Image"
@@ -172,15 +165,15 @@ const NewItem = () => {
         >
           {categoryOptions.map((categoryOption) => (
             <Picker.Item
-              label={categoryOption.category} // Adjust this based on your API response structure
-              value={categoryOption._id} // Adjust this based on your API response structure
-              key={categoryOption._id} // Adjust this based on your API response structure
+              label={categoryOption.category}
+              value={categoryOption._id}
+              key={categoryOption._id}
             />
           ))}
         </Picker>
       </View>
 
-      <Button title="Submit" onPress={handleSubmit} />
+      <Button title="Update" onPress={handleUpdate} />
     </View>
   );
 };
@@ -202,4 +195,4 @@ const styles = StyleSheet.create({
   dropdownContainer: { width: 200 },
 });
 
-export default NewItem;
+export default UpdateItem;

@@ -14,10 +14,13 @@ export const createList = async (req: Request, res: Response) => {
 export const getAllLists = async (req: Request, res: Response) => {
   try {
     const ownedLists = (req as any).ownedResources.filter((resource: any) => {
+      console.log("testing 1");
+      console.log(ownedLists);
       return resource instanceof ListModel;
     });
-
+    console.log("testing 2");
     res.json(ownedLists);
+    console.log(ownedLists);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }

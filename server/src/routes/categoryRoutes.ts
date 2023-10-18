@@ -20,8 +20,8 @@ const categoryRouter = express.Router();
 categoryRouter.post("/category", isAuthenticated, createCategory);
 categoryRouter.get(
   "/categories",
-  isAuthenticated,
-  isAuthorizedAllResources(CategoryModel),
+  /*  isAuthenticated,
+  isAuthorizedAllResources(CategoryModel), */
   getAllCategorys
 );
 categoryRouter.get(

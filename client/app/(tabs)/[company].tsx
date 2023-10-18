@@ -24,11 +24,11 @@ const Dashboard = () => {
             <Text style={styles.btnText}>Periods</Text>
           </View>
           <View>
-            <Link href="/period/lists/Index" style={styles.btn}></Link>
+            <Link href="/lists/MyLists" style={styles.btn}></Link>
             <Text style={styles.btnText}>Lists</Text>
           </View>
           <View>
-            <Link href="/items/Items" style={styles.btn}></Link>
+            <Link href="/items/MyItems" style={styles.btn}></Link>
             <Text style={styles.btnText}>Items</Text>
           </View>
           <View>

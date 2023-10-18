@@ -7,7 +7,8 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { login } from "./../api/authApi";
+import { login } from "../api/authApi";
+import { Link } from "expo-router";
 
 export interface LoginFormProps {
   onLogin: (credentials: { company: string; password: string }) => void;
@@ -53,9 +54,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
         secureTextEntry
       />
       <Button title="Login" onPress={handleLogin} />
-      <TouchableOpacity onPress={() => console.log("Forgot password?")}>
-        <Text style={styles.forgotPassword}>Forgot password?</Text>
-      </TouchableOpacity>
+      <View style={styles.linksContainer}>
+        <Link href="/ResetPassword">
+          <Text style={styles.forgotPassword}>Forgot password?</Text>
+        </Link>
+        <Link href="/register/Account">
+          <Text style={styles.forgotPassword}>Register</Text>
+        </Link>
+      </View>
     </View>
   );
 };
@@ -82,6 +88,13 @@ const styles = StyleSheet.create({
     color: "blue",
     textAlign: "center",
     marginTop: 8,
+  },
+  linksContainer: {
+    display: "flex",
+    flexDirection: "row",
+    width: 300,
+    alignItems: "center",
+    justifyContent: "space-evenly",
   },
 });
 

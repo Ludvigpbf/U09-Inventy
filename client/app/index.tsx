@@ -7,19 +7,19 @@ import { login } from "../api/authApi";
 import { Link, router } from "expo-router";
 
 export default function LandingScreen() {
-  /*  const handleLogin = async (credentials: {
+  const handleLogin = async (credentials: {
     company: string;
     password: string;
   }) => {
     console.log("success");
     router.replace("/Omaka");
-  }; */
+  };
 
   return (
     <View style={styles.container}>
       <Image source={require("../assets/images/inventy.png")} />
       <Text>Login</Text>
-      {/*  <LoginForm onLogin={handleLogin} /> */}
+      <LoginForm onLogin={handleLogin} />
       <Link href="/Omaka" style={styles.link}>
         Login
       </Link>

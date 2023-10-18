@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-const NewList = () => {
+const ItemDetails = () => {
   return (
     <View>
-      <Text>NewList</Text>
+      <Text>Item Details</Text>
     </View>
   );
 };
 
-export default NewList;
+export default ItemDetails;
 
 const styles = StyleSheet.create({});

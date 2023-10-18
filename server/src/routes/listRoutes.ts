@@ -17,11 +17,11 @@ import ListModel from "../models/List";
 
 const listRouter = express.Router();
 
-listRouter.post("/list", isAuthenticated, createList);
+listRouter.post("/list", /* isAuthenticated, */ createList);
 listRouter.get(
   "/lists",
-  isAuthenticated,
-  isAuthorizedAllResources(ListModel),
+  /* isAuthenticated, */
+  /*  isAuthorizedAllResources(ListModel), */
   getAllLists
 );
 listRouter.get(

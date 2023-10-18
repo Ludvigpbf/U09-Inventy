@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
+import { Link } from "expo-router";
 
 const NewPeriod = () => {
   const [periodName, setPeriodName] = useState("");

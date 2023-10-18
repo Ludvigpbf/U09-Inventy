@@ -25,6 +25,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: "#FF9933",
       }}
     >
+      <Tabs.Screen name="lists" options={{ tabBarButton: () => null }} />
       <Tabs.Screen
         name="period"
         options={{
