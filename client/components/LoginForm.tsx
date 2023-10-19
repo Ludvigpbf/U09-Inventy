@@ -55,9 +55,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
       />
       <Button title="Login" onPress={handleLogin} />
       <View style={styles.linksContainer}>
-        <Link href="/ResetPassword">
+        {/*  <Link href="/ResetPassword">
           <Text style={styles.forgotPassword}>Forgot password?</Text>
-        </Link>
+        </Link> */}
         <Link href="/register/Account">
           <Text style={styles.forgotPassword}>Register</Text>
         </Link>
@@ -92,9 +92,10 @@ const styles = StyleSheet.create({
   linksContainer: {
     display: "flex",
     flexDirection: "row",
-    width: 300,
+    width: 280,
     alignItems: "center",
     justifyContent: "space-evenly",
+    margin: 10,
   },
 });
 

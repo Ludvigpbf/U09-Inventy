@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#D9D9D9",
     height: 200,
     borderRadius: 10,
-    width: 330,
+    width: 300,
   },
   title: {
     fontSize: 20,
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    width: 330,
+    width: 300,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#D9D9D9",
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   },
   container2: {
     backgroundColor: "#D9D9D9",
-    width: 330,
+    width: 300,
     borderRadius: 10,
     marginTop: 20,
     padding: 10,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: 330,
+    width: 300,
     marginTop: 20,
   },
   flatlistContainer: {

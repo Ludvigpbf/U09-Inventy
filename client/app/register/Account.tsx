@@ -1,44 +1,85 @@
+import {
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TextInput, Button } from "react-native";
-import { StackScreenProps } from "@react-navigation/stack";
+import { router } from "expo-router";
+import { setUserData } from "./actions";
+import { useDispatch } from "react-redux";
 
-type YourNavigatorParams = {
-  Account: undefined;
-  Billing: { company: string; email: string; password: string };
-  // Add more screens if needed
-};
+const Account = () => {
+  const [company, setCompany] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [departments, setDepartments] = useState<
+    Array<{ department: string; manager: string }>
+  >([{ department: "", manager: "" }]);
 
-type Props = StackScreenProps<YourNavigatorParams, "Account">;
-
-const Account: React.FC<Props> = ({ navigation }) => {
-  const [company, setCompany] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
 
   const handleNext = () => {
-    // Pass the data to the next step (Billing.js)
-    navigation.navigate("Billing", {
-      company,
-      email,
-      password,
-    });
+    // Create an object to store the user's information
+    const userData = {
+      company: company,
+      email: email,
+      password: password,
+      plan: "",
+      billing: {
+        company: "",
+        orgNumber: "",
+        address: "",
+        email: "",
+        phone: 0,
+      },
+      departments: departments,
+    };
+    console.log(userData);
+    dispatch(setUserData(userData));
+
+    // You can store this userData in your app's state, context, or send it to the "Billing" screen as needed
+    // For now, we'll just navigate to the "Billing" screen
+    router.push("/register/Billing");
+  };
+
+  const addDepartment = () => {
+    // Add a new empty department and manager field when the user clicks "+"
+    setDepartments([...departments, { department: "", manager: "" }]);
+  };
+
+  const updateDepartment = (
+    text: string,
+    index: number,
+    isManager: boolean
+  ) => {
+    // Update the department or manager value based on the index
+    const updatedDepartments = [...departments];
+    updatedDepartments[index][isManager ? "manager" : "department"] = text;
+    setDepartments(updatedDepartments);
   };
 
   return (
     <View style={styles.container}>
+      <Text>1/4</Text>
       <Text>Register Account</Text>
+      <Text>Company:</Text>
       <TextInput
         style={styles.input}
         placeholder="Company"
         value={company}
         onChangeText={(text) => setCompany(text)}
       />
+      <Text>Email:</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
         value={email}
         onChangeText={(text) => setEmail(text)}
       />
+      <Text>Password:</Text>
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -46,6 +87,26 @@ const Account: React.FC<Props> = ({ navigation }) => {
         onChangeText={(text) => setPassword(text)}
         secureTextEntry
       />
+      <Text>Departments and Managers:</Text>
+      {departments.map((item, index) => (
+        <View key={index} style={styles.departmentContainer}>
+          <TextInput
+            style={styles.departmentInput}
+            placeholder="Department"
+            value={item.department}
+            onChangeText={(text) => updateDepartment(text, index, false)}
+          />
+          <TextInput
+            style={styles.departmentInput}
+            placeholder="Manager"
+            value={item.manager}
+            onChangeText={(text) => updateDepartment(text, index, true)}
+          />
+        </View>
+      ))}
+      <TouchableOpacity onPress={addDepartment} style={styles.addButton}>
+        <Text style={styles.addButtonText}>+</Text>
+      </TouchableOpacity>
       <Button title="Next" onPress={handleNext} />
     </View>
   );
@@ -64,6 +125,31 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     margin: 10,
     padding: 5,
+  },
+  departmentContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  departmentInput: {
+    width: 140,
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    margin: 10,
+    padding: 5,
+  },
+  addButton: {
+    backgroundColor: "blue",
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
+  },
+  addButtonText: {
+    color: "white",
+    fontSize: 20,
   },
 });
 

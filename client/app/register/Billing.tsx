@@ -1,72 +1,79 @@
-// Billing.tsx
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TextInput, Button } from "react-native";
-import { StackScreenProps } from "@react-navigation/stack";
+import { useDispatch, useSelector } from "react-redux";
+import { setBillingData } from "./actions"; // Create a new action for billing data
+import { RootState } from "./store"; // Import your RootState type
+import { router } from "expo-router";
 
-type YourNavigatorParams = {
-  Account: undefined;
-  Billing: {
-    company: string;
-    email: string;
-    password: string;
-  };
-  Plan: {
-    company: string;
-    email: string;
-    password: string;
-    orgNumber: string;
-    address: string;
-    phone: string;
-  };
-  /*   Terms: ;
-  Preview: ;
- */
-};
+const Billing = () => {
+  const dispatch = useDispatch();
+  const userData = useSelector((state: RootState) => state.user);
 
-type Props = StackScreenProps<YourNavigatorParams, "Billing">;
+  const [company, setCompany] = useState<string>("");
+  const [orgNumber, setOrgNumber] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
+  const [phone, setPhone] = useState<number | undefined>();
 
-const Billing: React.FC<Props> = ({ navigation, route }) => {
-  // Get the data passed from the "Account" screen
-  const { company, email, password } = route.params;
-
-  const [orgNumber, setOrgNumber] = useState("");
-  const [address, setAddress] = useState("");
-  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState<string>("");
 
   const handleNext = () => {
-    // Pass the billing information to the next step (e.g., "Plan" component)
-    navigation.navigate("Plan", {
-      company,
-      email,
-      password,
-      orgNumber,
-      address,
-      phone,
-    });
+    const billingData = {
+      company: company,
+      orgNumber: orgNumber,
+      address: address,
+      email: email,
+      phone: phone || 0,
+    };
+
+    // Dispatch the SET_BILLING_DATA action to update billing data
+    dispatch(setBillingData(billingData));
+
+    // You can navigate to the next screen as needed
+    router.push("/register/Plan");
   };
 
   return (
-    <View style={styles.container}>
-      <Text>Enter Billing Information</Text>
+    <View>
+      <Text>2/4</Text>
+      <Text>Billing</Text>
+      {/* Input fields for billing data */}
+      <Text>Company name:</Text>
       <TextInput
         style={styles.input}
-        placeholder="Organization Number"
+        placeholder="Company Name"
+        value={company}
+        onChangeText={(text) => setCompany(text)}
+      />
+      <Text>Organization number:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Org Number"
         value={orgNumber}
         onChangeText={(text) => setOrgNumber(text)}
       />
+      <Text>Address:</Text>
       <TextInput
         style={styles.input}
         placeholder="Address"
         value={address}
         onChangeText={(text) => setAddress(text)}
       />
+      <Text>Phone:</Text>
       <TextInput
         style={styles.input}
         placeholder="Phone"
-        value={phone}
-        onChangeText={(text) => setPhone(text)}
+        value={phone !== undefined ? phone.toString() : ""}
+        onChangeText={(text) => setPhone(parseInt(text) || undefined)}
+        keyboardType="numeric"
       />
-      <Button title="Next" onPress={handleNext} />
+      <Text>Email:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={(text) => setEmail(text)}
+      />
+      <Button title="Save" onPress={handleNext} />
     </View>
   );
 };
@@ -76,14 +83,23 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    paddingHorizontal: 16,
+  },
+  header: {
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
   },
   input: {
-    width: 300,
+    width: "100%",
     height: 40,
     borderColor: "gray",
     borderWidth: 1,
-    margin: 10,
-    padding: 5,
+    marginBottom: 10,
+    paddingHorizontal: 10,
   },
 });
 

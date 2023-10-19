@@ -62,7 +62,7 @@ const UserSchema = new Schema<IUser>({
         message: "Organization number must be a 10-digit number.",
       },
     },
-    adress: { type: String, required: true },
+    address: { type: String, required: true },
     email: {
       type: String,
       required: true,

@@ -3,10 +3,13 @@ import { Platform, Image, StyleSheet, View, Text } from "react-native";
 
 /* import { Text, View } from "../components/Themed"; */
 import LoginForm from "../components/LoginForm";
-import { login } from "../api/authApi";
+/* import { login } from "../api/authApi"; */
 import { Link, router } from "expo-router";
+import { useDispatch } from "react-redux";
+import { login } from "./actions";
 
 export default function LandingScreen() {
+  const dispatch = useDispatch();
   const handleLogin = async (credentials: {
     company: string;
     password: string;
@@ -20,9 +23,7 @@ export default function LandingScreen() {
       <Image source={require("../assets/images/inventy.png")} />
       <Text>Login</Text>
       <LoginForm onLogin={handleLogin} />
-      <Link href="/Omaka" style={styles.link}>
-        Login
-      </Link>
+
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
     </View>
