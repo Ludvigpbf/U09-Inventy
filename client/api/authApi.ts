@@ -1,10 +1,9 @@
 // authApi.ts
 import axios from "axios";
-import { login as loginAction } from "../app/actions"; // Import the login action from your Redux store
 
 export const API_BASE_URL = "http://localhost:3000";
 
-export const login = async (credentials: {
+export const loginApiCall = async (credentials: {
   company: string;
   password: string;
 }) => {
@@ -15,9 +14,26 @@ export const login = async (credentials: {
       credentials
     );
     console.log("Login response:", response.data);
-    loginAction(response.data); // Dispatch the login action with user data
+    const token = response.data.token;
+    console.log("Token:", token);
+
+    return response.data;
   } catch (error) {
     console.error("Login error:", error);
+    throw error;
+  }
+};
+
+export const fetchCompanyInfo = async (token: string, companyId: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/user/user/${companyId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching company information:", error);
     throw error;
   }
 };

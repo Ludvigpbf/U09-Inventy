@@ -7,7 +7,10 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { login } from "../api/authApi";
+import { useDispatch } from "react-redux";
+import { setToken } from "../app/authSlice";
+import { loginApiCall } from "../api/authApi";
+
 import { Link } from "expo-router";
 
 export interface LoginFormProps {
@@ -15,19 +18,16 @@ export interface LoginFormProps {
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
+  const dispatch = useDispatch();
   const [company, setCompany] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
     try {
-      console.log("Logging in with credentials:", { company, password });
-      // Call the login function from your API module
-      const response = await login({ company, password });
-
-      // Handle the authentication response, e.g., update UI or trigger a callback
-      console.log("Login successful:", response);
-
-      // Call the onLogin function to notify the parent component of the login attempt
+      const response = await loginApiCall({ company, password });
+      const token = response.token;
+      dispatch(setToken(token));
+      // Call the onLogin function to notify the parent component of the login attempt */
       onLogin({ company, password });
     } catch (error) {
       // Handle login error

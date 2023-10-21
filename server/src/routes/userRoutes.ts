@@ -16,8 +16,8 @@ const userRouter = express.Router();
 userRouter.post("/user", createUser);
 userRouter.get(
   "/user/:id",
-  isAuthenticated,
-  isAuthorizedById(UserModel),
+  /*   isAuthenticated,
+  isAuthorizedById(UserModel), */
   getUserById
 );
 userRouter.get(

@@ -1,6 +1,9 @@
 import { StyleSheet, Text, View, FlatList, ScrollView } from "react-native";
 import React, { useState } from "react";
 import { Link, useLocalSearchParams } from "expo-router";
+import { RootState } from "../store";
+import { useSelector } from "react-redux";
+import { User } from "./../../interfaces/companyTypes";
 type Item = {
   id: number;
   content: string;
@@ -8,6 +11,10 @@ type Item = {
 
 const Dashboard = () => {
   const { company } = useLocalSearchParams();
+
+  const companyData: User | null = useSelector(
+    (state: RootState) => state.company.data
+  );
 
   const [items, setItems] = useState<Item[]>([
     { id: 1, content: "Item 1" },
@@ -41,11 +48,8 @@ const Dashboard = () => {
           </View>
         </View>
         <View style={styles.container2}>
-          <Text>Some Information</Text>
-          <Text>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure,
-            iusto!
-          </Text>
+          <Text>Email:</Text>
+          <Text>{companyData?.email}</Text>
         </View>
         <View style={styles.flatlistContainer}>
           <FlatList
@@ -79,9 +83,9 @@ const Dashboard = () => {
             href="/(tabs)/statistics/Statistic"
             style={styles.containerColumn}
           >
-            <Text style={styles.title}>Last Period:</Text>
+            <Text style={styles.title}>Departments:</Text>
             <View>
-              <Text>Section one</Text>
+              <Text>{companyData?.departments[0].department}</Text>
               <Text>Section two</Text>
               <Text>Section three</Text>
               <Text>Section four</Text>

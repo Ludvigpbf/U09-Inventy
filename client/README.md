@@ -42,3 +42,6 @@
     - contact
       - mail
       - phone
+
+Login fungerar, hämtar data från db med token. Kan skriva ut lite data i dashboarden.
+behöver flytta get apiCall till dashboard från loginScreen.

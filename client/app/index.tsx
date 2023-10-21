@@ -3,10 +3,12 @@ import { Platform, Image, StyleSheet, View, Text } from "react-native";
 
 /* import { Text, View } from "../components/Themed"; */
 import LoginForm from "../components/LoginForm";
-/* import { login } from "../api/authApi"; */
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { useDispatch } from "react-redux";
-import { login } from "./actions";
+import { setToken } from "./authSlice";
+import { setCompanyData } from "./companySlice";
+import { fetchCompanyInfo, loginApiCall } from "../api/authApi";
+import jwtDecode from "jwt-decode";
 
 export default function LandingScreen() {
   const dispatch = useDispatch();
@@ -14,8 +16,29 @@ export default function LandingScreen() {
     company: string;
     password: string;
   }) => {
-    console.log("success");
-    router.replace("/Omaka");
+    try {
+      const response = await loginApiCall(credentials);
+      const token = response.token;
+
+      const decodedToken: { companyId: string } | undefined = jwtDecode(token);
+
+      if (decodedToken && decodedToken.companyId) {
+        const userId = decodedToken.companyId;
+        console.log("Login success. Token: ", token);
+        console.log("User ID: ", userId);
+        dispatch(setToken(token));
+
+        const companyInfo = await fetchCompanyInfo(token, userId);
+        dispatch(setCompanyData(companyInfo));
+        const company = companyInfo.company;
+
+        router.replace(`/${company}`);
+      } else {
+        console.error("Invalid token format");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
 
   return (

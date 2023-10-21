@@ -35,9 +35,7 @@ export const login = async (req: Request, res: Response) => {
     const token = jwt.sign(payload, secretKey, { expiresIn: "30m" });
 
     res.header("Authorization", `Bearer ${token}`);
-    res.json({
-      message: `${companyName} logged in successfuly with id: ${companyId} and token: ${token}`,
-    });
+    res.json({ token });
   } catch (error) {
     console.error("Error during login:", error);
     res.status(500).json({ message: "Internal Server Error" });
