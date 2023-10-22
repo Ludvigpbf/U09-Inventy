@@ -8,14 +8,10 @@ export const loginApiCall = async (credentials: {
   password: string;
 }) => {
   try {
-    console.log("Sending login request with credentials:", credentials);
     const response = await axios.post(
       `${API_BASE_URL}/auth/login/`,
       credentials
     );
-    console.log("Login response:", response.data);
-    const token = response.data.token;
-    console.log("Token:", token);
 
     return response.data;
   } catch (error) {

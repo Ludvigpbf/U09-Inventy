@@ -8,6 +8,7 @@
   - terms & conditions
 - forgot password
 - dasboard
+
   - new inventory
   - my lists
     - new list
@@ -43,5 +44,26 @@
       - mail
       - phone
 
-Login fungerar, hämtar data från db med token. Kan skriva ut lite data i dashboarden.
-behöver flytta get apiCall till dashboard från loginScreen.
+- (tabs)
+  - items
+    - items screen 1
+    - items screen 2
+    - items screen 3
+  - lists
+    - lists screen 1
+    - lists screen 2
+    - lists screen 3
+  - period
+    - period screen 1
+    - period screen 2
+    - period screen 3
+  - settings
+    - settings screen 1
+    - settings screen 2
+    - settings screen 3
+  - statistics
+    - statistics screen 1
+    - statistics screen 2
+    - statistics screen 3
+  - \_layout
+  - Dashboard

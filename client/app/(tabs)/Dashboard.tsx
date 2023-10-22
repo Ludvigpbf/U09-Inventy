@@ -3,15 +3,14 @@ import React, { useState } from "react";
 import { Link, useLocalSearchParams } from "expo-router";
 import { RootState } from "../store";
 import { useSelector } from "react-redux";
-import { User } from "./../../interfaces/companyTypes";
+import { User } from "../../interfaces/companyTypes";
+import { Ionicons } from "@expo/vector-icons";
 type Item = {
   id: number;
   content: string;
 };
 
 const Dashboard = () => {
-  const { company } = useLocalSearchParams();
-
   const companyData: User | null = useSelector(
     (state: RootState) => state.company.data
   );
@@ -24,26 +23,45 @@ const Dashboard = () => {
   return (
     <ScrollView contentContainerStyle={styles.containerColumn}>
       <View style={styles.containerRow}>
-        <Text>{company}'s Dashboard</Text>
+        <Text>{companyData?.company}'s Dashboard</Text>
         <View style={styles.btnsContainer}>
           <View>
-            <Link href="/period/Index" style={styles.btn}></Link>
+            <Link href="/period/Index" style={styles.btn}>
+              <Ionicons
+                name="ios-clipboard-outline"
+                size={32}
+                color={"white"}
+              />
+            </Link>
             <Text style={styles.btnText}>Periods</Text>
           </View>
           <View>
-            <Link href="/lists/MyLists" style={styles.btn}></Link>
+            <Link href="/lists/MyLists" style={styles.btn}>
+              <Ionicons name="ios-list-outline" size={32} color="white" />
+            </Link>
             <Text style={styles.btnText}>Lists</Text>
           </View>
           <View>
-            <Link href="/items/MyItems" style={styles.btn}></Link>
+            <Link href="/items/MyItems" style={styles.btn}>
+              <Ionicons name="ios-cube-outline" size={32} color={"white"} />
+            </Link>
             <Text style={styles.btnText}>Items</Text>
           </View>
           <View>
-            <Link href="/statistics/Statistic" style={styles.btn}></Link>
+            <Link href="/statistics/Statistic" style={styles.btn}>
+              <Ionicons
+                name="ios-stats-chart-outline"
+                size={32}
+                color={"white"}
+              />
+            </Link>
             <Text style={styles.btnText}>Statistics</Text>
           </View>
           <View>
-            <Link href="/settings/Index" style={styles.btn}></Link>
+            <Link href="/settings/Index" style={styles.btn}>
+              {" "}
+              <Ionicons name="ios-settings-outline" size={32} color={"white"} />
+            </Link>
             <Text style={styles.btnText}>Settings</Text>
           </View>
         </View>

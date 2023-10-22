@@ -9,7 +9,7 @@ export interface UserData {
     orgNumber: string;
     address: string;
     email: string;
-    phone: number;
+    phone: string;
   };
   departments: {
     department: string;

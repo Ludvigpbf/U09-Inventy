@@ -4,6 +4,9 @@ import { Pressable, View, useColorScheme } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import ModalScreen from "../Modal";
+import PrivateRoute from "../../components/PrivateRoute";
+import { useSelector } from "react-redux";
+import { selectIsAuthenticated } from "../authSlice";
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -17,7 +20,7 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-
+  const isUserAuthenticated = useSelector(selectIsAuthenticated);
   return (
     <Tabs
       screenOptions={{
@@ -26,6 +29,8 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen name="lists" options={{ tabBarButton: () => null }} />
+
+      {/* <PrivateRoute isAuthed={isUserAuthenticated}> */}
       <Tabs.Screen
         name="period"
         options={{
@@ -52,6 +57,7 @@ export default function TabLayout() {
           ),
         }}
       />
+      {/*   </PrivateRoute> */}
       {
         <Tabs.Screen
           name="items"
@@ -80,7 +86,7 @@ export default function TabLayout() {
         />
       }
       <Tabs.Screen
-        name="[company]"
+        name="Dashboard"
         options={{
           title: "Dashboard",
           headerTitleAlign: "center",

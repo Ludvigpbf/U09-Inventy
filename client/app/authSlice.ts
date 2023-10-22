@@ -1,5 +1,5 @@
 // authSlice.ts
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 const authSlice = createSlice({
   name: "auth",
@@ -16,3 +16,8 @@ const authSlice = createSlice({
 
 export const { setToken, clearToken } = authSlice.actions;
 export default authSlice.reducer;
+
+export const selectIsAuthenticated = createSelector(
+  (state) => state.auth.token,
+  (token) => !!token
+);

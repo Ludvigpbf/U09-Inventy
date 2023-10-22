@@ -11,7 +11,7 @@ export interface IUser extends Document {
     orgNumber: string;
     adress: string;
     email: string;
-    phone: number;
+    phone: string;
   };
   departments: {
     department: string;
@@ -40,7 +40,7 @@ const UserSchema = new Schema<IUser>({
     validate: {
       validator: function (value: string) {
         const passwordRegex =
-          /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?!\s).{8,16}$/;
+          /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@¤#$%^&+=!])(?!\s).{8,16}$/;
         return passwordRegex.test(value);
       },
       message:
@@ -76,7 +76,7 @@ const UserSchema = new Schema<IUser>({
         message: "Invalid email address",
       },
     },
-    phone: { type: Number, required: true },
+    phone: { type: String, required: true },
   },
   departments: [
     {

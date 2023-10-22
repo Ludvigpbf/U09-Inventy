@@ -12,17 +12,56 @@ const Billing = () => {
   const [company, setCompany] = useState<string>("");
   const [orgNumber, setOrgNumber] = useState<string>("");
   const [address, setAddress] = useState<string>("");
-  const [phone, setPhone] = useState<number | undefined>();
+  const [phone, setPhone] = useState<string>("");
 
   const [email, setEmail] = useState<string>("");
+  const [orgNumberError, setOrgNumberError] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
+  const [phoneError, setPhoneError] = useState<string>("");
+
+  const validateOrgNumber = (value: string) => {
+    const orgNumberRegex = /^\d{10}$/;
+    if (!orgNumberRegex.test(value)) {
+      setOrgNumberError("Must be a 10-digit number.");
+      return;
+    } else {
+      setOrgNumberError("");
+    }
+  };
+
+  const validateEmail = (value: string) => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailRegex.test(value)) {
+      setEmailError("Invalid email address");
+    } else {
+      setEmailError("");
+    }
+  };
+  const validatePhone = (value: string) => {
+    const phoneRegex = /^[+]+[0-9]{8,12}$/;
+    if (!phoneRegex.test(value)) {
+      setPhoneError("Invalid phone number");
+      return;
+    } else {
+      setPhoneError("");
+    }
+  };
 
   const handleNext = () => {
+    validateOrgNumber(orgNumber);
+    validateEmail(email);
+    validatePhone(phone);
+
+    // If there are errors, do not proceed
+    if (orgNumberError || emailError || phoneError) {
+      return;
+    }
     const billingData = {
       company: company,
       orgNumber: orgNumber,
       address: address,
       email: email,
-      phone: phone || 0,
+      phone: phone,
     };
 
     // Dispatch the SET_BILLING_DATA action to update billing data
@@ -40,38 +79,63 @@ const Billing = () => {
       <Text>Company name:</Text>
       <TextInput
         style={styles.input}
-        placeholder="Company Name"
+        placeholder="Company AB"
+        placeholderTextColor="#BABABA"
         value={company}
         onChangeText={(text) => setCompany(text)}
       />
-      <Text>Organization number:</Text>
+      <Text>
+        Organization number:{" "}
+        {orgNumberError && (
+          <Text style={styles.errorText}>{orgNumberError}</Text>
+        )}
+      </Text>
       <TextInput
-        style={styles.input}
-        placeholder="Org Number"
+        style={[styles.input, orgNumberError ? { borderColor: "red" } : null]}
+        placeholder="1234567891"
+        placeholderTextColor="#BABABA"
         value={orgNumber}
-        onChangeText={(text) => setOrgNumber(text)}
+        onChangeText={(text) => {
+          setOrgNumber(text);
+          validateOrgNumber(text);
+        }}
       />
       <Text>Address:</Text>
       <TextInput
         style={styles.input}
-        placeholder="Address"
+        placeholder="Billing street 5b"
+        placeholderTextColor="#BABABA"
         value={address}
         onChangeText={(text) => setAddress(text)}
       />
-      <Text>Phone:</Text>
+      <Text>
+        Phone:{" "}
+        {phoneError && <Text style={styles.errorText}>{phoneError}</Text>}
+      </Text>
       <TextInput
-        style={styles.input}
-        placeholder="Phone"
-        value={phone !== undefined ? phone.toString() : ""}
-        onChangeText={(text) => setPhone(parseInt(text) || undefined)}
+        style={[styles.input, phoneError ? { borderColor: "red" } : null]}
+        placeholder="+46701234567"
+        placeholderTextColor="#BABABA"
+        value={phone !== undefined ? phone : ""}
+        onChangeText={(text) => {
+          setPhone(text);
+          validatePhone(text);
+        }}
         keyboardType="numeric"
       />
-      <Text>Email:</Text>
+      <Text>
+        Email:{" "}
+        {emailError && <Text style={styles.errorText}>{emailError}</Text>}
+      </Text>
       <TextInput
-        style={styles.input}
-        placeholder="Email"
+        style={[styles.input, emailError ? { borderColor: "red" } : null]}
+        placeholder="billing@mail.com"
+        placeholderTextColor="#BABABA"
         value={email}
-        onChangeText={(text) => setEmail(text)}
+        onChangeText={(text) => {
+          setEmail(text);
+          validateEmail(text);
+        }}
       />
       <Button title="Save" onPress={handleNext} />
     </View>
@@ -100,6 +164,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
+  },
+  errorText: {
+    padding: 5,
+    fontSize: 10,
   },
 });
 

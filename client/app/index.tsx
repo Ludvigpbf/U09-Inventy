@@ -24,15 +24,11 @@ export default function LandingScreen() {
 
       if (decodedToken && decodedToken.companyId) {
         const userId = decodedToken.companyId;
-        console.log("Login success. Token: ", token);
-        console.log("User ID: ", userId);
-        dispatch(setToken(token));
 
+        dispatch(setToken(token));
         const companyInfo = await fetchCompanyInfo(token, userId);
         dispatch(setCompanyData(companyInfo));
-        const company = companyInfo.company;
-
-        router.replace(`/${company}`);
+        router.replace(`/Dashboard`);
       } else {
         console.error("Invalid token format");
       }

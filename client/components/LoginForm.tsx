@@ -21,6 +21,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
   const dispatch = useDispatch();
   const [company, setCompany] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleLogin = async () => {
     try {
@@ -32,6 +33,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
     } catch (error) {
       // Handle login error
       console.error("Login error:", error);
+      setError("Company or password is incorrect. Please try again");
     }
   };
 
@@ -53,6 +55,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
         placeholder="Password"
         secureTextEntry
       />
+      {error ? ( // Display error message if error state is not empty
+        <Text style={styles.errorMessage}>{error}</Text>
+      ) : null}
       <Button title="Login" onPress={handleLogin} />
       <View style={styles.linksContainer}>
         {/*  <Link href="/ResetPassword">
@@ -96,6 +101,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-evenly",
     margin: 10,
+  },
+  errorMessage: {
+    alignSelf: "center",
+    width: 250,
+    textAlign: "center",
+    marginBottom: 10,
+    borderWidth: 1,
+    padding: 10,
+    borderColor: "red",
   },
 });
 
