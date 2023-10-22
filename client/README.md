@@ -67,3 +67,6 @@
     - statistics screen 3
   - \_layout
   - Dashboard
+
+validering för registrering fungerar, behöver lägga till edit knapp på preview samt styling.
+PrivateRoute fungerar inte än, har börjat sätta upp
