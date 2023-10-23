@@ -9,7 +9,7 @@ export interface IUser extends Document {
   billing: {
     company: string;
     orgNumber: string;
-    adress: string;
+    address: string;
     email: string;
     phone: string;
   };
@@ -53,7 +53,6 @@ const UserSchema = new Schema<IUser>({
     orgNumber: {
       type: String,
       required: true,
-      unique: true,
       validate: {
         validator: function (value: string) {
           const orgNumberRegex = /^\d{10}$/;
@@ -67,7 +66,6 @@ const UserSchema = new Schema<IUser>({
       type: String,
       required: true,
       trim: true,
-      unique: true,
       lowercase: true,
       validate: {
         validator: function (value: string) {

@@ -19,9 +19,15 @@ const Plan = () => {
     <View style={styles.container}>
       <Text>3/4</Text>
       <Text style={styles.header}>Select a Plan</Text>
-      <Button title="Plan 1" onPress={() => handleSelectPlan("Plan 1")} />
-      <Button title="Plan 2" onPress={() => handleSelectPlan("Plan 2")} />
-      <Button title="Plan 3" onPress={() => handleSelectPlan("Plan 3")} />
+      <View style={styles.buttonContainer}>
+        <Button title="Plan 1" onPress={() => handleSelectPlan("Plan 1")} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="Plan 2" onPress={() => handleSelectPlan("Plan 2")} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="Plan 3" onPress={() => handleSelectPlan("Plan 3")} />
+      </View>
     </View>
   );
 };
@@ -40,6 +46,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 20,
+  },
+  planBtn: {
+    margin: 10,
+  },
+  buttonContainer: {
+    margin: 10,
   },
 });
 

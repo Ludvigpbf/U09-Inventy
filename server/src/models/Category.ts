@@ -6,13 +6,15 @@ interface ICategory extends Document {
 }
 
 const CategorySchema = new Schema<ICategory>({
-  categoryTitle: { type: String, unique: true },
+  categoryTitle: { type: String },
   ownedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
 });
+
+CategorySchema.index({ ownedBy: 1, categoryTitle: 1 }, { unique: true });
 
 const CategoryModel: Model<ICategory> = mongoose.model(
   "Category",

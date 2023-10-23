@@ -1,10 +1,11 @@
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
 import { UserData } from "./actions"; // Import the UserData interface
 import { API_BASE_URL } from "../../api/authApi";
 import axios from "axios";
+import { router } from "expo-router";
 
 const Preview = () => {
   // Use the useSelector hook to access the user data
@@ -22,6 +23,9 @@ const Preview = () => {
     }
     return null; // Return null if userData is null
   };
+  useEffect(() => {
+    console.log(userData);
+  });
 
   const createUser = async (userData: UserData | null) => {
     try {
@@ -51,6 +55,7 @@ const Preview = () => {
       try {
         const createdUser = await createUser(userDataToCreate);
         console.log("User created on the server:", createdUser);
+        router.replace(`/`);
         // Navigate to the next screen or handle the response as needed
       } catch (error) {
         console.error("Error creating user:", error);
@@ -63,19 +68,45 @@ const Preview = () => {
 
   return (
     <View style={styles.container}>
-      <Text>4/4</Text>
+      <Text style={styles.pageNumber}>4/4</Text>
       {safeUserData && ( // Check if safeUserData is not null
-        <View>
-          <Text>Company: {safeUserData.company}</Text>
-          <Text>Email: {safeUserData.email}</Text>
-          <Text>Plan: {safeUserData.plan}</Text>
+        <View style={styles.previewContainer}>
+          <View style={styles.propValueContainer}>
+            <Text style={styles.property}>Company: </Text>
+            <Text style={styles.value}>{safeUserData.company}</Text>
+          </View>
+          <View style={styles.propValueContainer}>
+            <Text style={styles.property}>Email: </Text>
+            <Text style={styles.value}>{safeUserData.email}</Text>
+          </View>
+          <View style={styles.propValueContainer}>
+            <Text style={styles.property}>Plan: </Text>
+            <Text style={styles.value}>{safeUserData.plan}</Text>
+          </View>
           {safeUserData.billing && (
             <>
-              <Text>Billing Company: {safeUserData.billing.company}</Text>
-              <Text>Billing Org Number: {safeUserData.billing.orgNumber}</Text>
-              <Text>Billing Address: {safeUserData.billing.address}</Text>
-              <Text>Billing Email: {safeUserData.billing.email}</Text>
-              <Text>Billing Phone: {safeUserData.billing.phone}</Text>
+              <View style={styles.propValueContainer}>
+                <Text style={styles.property}>Billing Company: </Text>
+                <Text style={styles.value}>{safeUserData.billing.company}</Text>
+              </View>
+              <View style={styles.propValueContainer}>
+                <Text style={styles.property}>Billing Org Number: </Text>
+                <Text style={styles.value}>
+                  {safeUserData.billing.orgNumber}
+                </Text>
+              </View>
+              <View style={styles.propValueContainer}>
+                <Text style={styles.property}>Billing Address: </Text>
+                <Text style={styles.value}>{safeUserData.billing.address}</Text>
+              </View>
+              <View style={styles.propValueContainer}>
+                <Text style={styles.property}>Billing Email: </Text>
+                <Text style={styles.value}>{safeUserData.billing.email}</Text>
+              </View>
+              <View style={styles.propValueContainer}>
+                <Text style={styles.property}>Billing Phone: </Text>
+                <Text style={styles.value}>{safeUserData.billing.phone}</Text>
+              </View>
             </>
           )}
           {safeUserData.departments && safeUserData.departments.length > 0 && (
@@ -86,8 +117,12 @@ const Preview = () => {
                     <Text>Departments:</Text>
                     {safeUserData.departments.map((department, index) => (
                       <View key={index}>
-                        <Text>Department: {department.department}</Text>
-                        <Text>Manager: {department.manager}</Text>
+                        <Text style={styles.property}>Department: </Text>
+                        <Text style={styles.value}>
+                          {department.department}
+                        </Text>
+                        <Text style={styles.property}>Manager: </Text>
+                        <Text style={styles.value}>{department.manager}</Text>
                       </View>
                     ))}
                   </View>
@@ -106,7 +141,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 16,
+    paddingHorizontal: 5,
   },
   header: {
     fontSize: 20,
@@ -115,6 +150,32 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 20,
+  },
+  pageNumber: {},
+  previewContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignContent: "center",
+    marginTop: 50,
+    marginBottom: 50,
+    borderWidth: 1,
+    padding: 10,
+    width: 310,
+  },
+  propValueContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  property: {},
+  value: {
+    paddingLeft: 5,
+    paddingBottom: 3,
+
+    borderWidth: 1,
+    borderRadius: 4,
+    width: 140,
   },
 });
 

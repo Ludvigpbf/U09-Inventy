@@ -23,6 +23,17 @@ const Account = () => {
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [isPasswordListVisible, setPasswordListVisibility] = useState(false);
+  const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
+  const [passwordConfirmationError, setPasswordConfirmationError] =
+    useState<string>("");
+
+  const validatePasswordConfirmation = (value: string) => {
+    if (value !== password) {
+      setPasswordConfirmationError("Passwords do not match");
+    } else {
+      setPasswordConfirmationError("");
+    }
+  };
 
   const togglePasswordListVisibility = () => {
     setPasswordListVisibility((prev) => !prev);
@@ -52,9 +63,10 @@ const Account = () => {
   const handleNext = () => {
     validateEmail(email);
     validatePassword(password);
+    validatePasswordConfirmation(passwordConfirmation);
 
     // If there are errors, do not proceed
-    if (emailError || passwordError) {
+    if (emailError || passwordError || passwordConfirmationError) {
       return;
     }
     // Create an object to store the user's information
@@ -149,6 +161,26 @@ const Account = () => {
         onChangeText={(text) => {
           setPassword(text);
           validatePassword(text);
+        }}
+        secureTextEntry
+      />
+      <Text>
+        Confirm Password:{" "}
+        {passwordConfirmationError && (
+          <Text style={styles.errorText}>{passwordConfirmationError}</Text>
+        )}
+      </Text>
+      <TextInput
+        style={[
+          styles.input,
+          passwordConfirmationError ? { borderColor: "red" } : null,
+        ]}
+        placeholder="Confirm Password"
+        placeholderTextColor="#BABABA"
+        value={passwordConfirmation}
+        onChangeText={(text) => {
+          setPasswordConfirmation(text);
+          validatePasswordConfirmation(text);
         }}
         secureTextEntry
       />

@@ -14,8 +14,8 @@ interface IItem extends Document {
 }
 
 const ItemSchema = new Schema<IItem>({
-  itemSKU: { type: String, unique: true },
-  itemTitle: { type: String, required: true, unique: true },
+  itemSKU: { type: String },
+  itemTitle: { type: String, required: true },
   itemDescription: { type: String },
   itemImage: {
     type: mongoose.Schema.Types.ObjectId,
@@ -43,6 +43,9 @@ const ItemSchema = new Schema<IItem>({
     required: true,
   },
 });
+
+ItemSchema.index({ ownedBy: 1, itemTitle: 1 }, { unique: true });
+ItemSchema.index({ ownedBy: 1, itemSKU: 1 }, { unique: true });
 
 const ItemModel: Model<IItem> = mongoose.model<IItem>("Item", ItemSchema);
 

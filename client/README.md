@@ -68,5 +68,6 @@
   - \_layout
   - Dashboard
 
-validering för registrering fungerar, behöver lägga till edit knapp på preview samt styling.
-PrivateRoute fungerar inte än, har börjat sätta upp
+styling på preview fungerar, password validering klar. ändrat unique true till enskilda users.
+PrivateRoute fungerar inte än, har börjat sätta upp.
+Behöver fixa crud på alla models.

@@ -10,7 +10,7 @@ interface ISection extends Document {
   ownedBy: Types.ObjectId;
 }
 const SectionSchema = new Schema<ISection>({
-  sectionTitle: { type: String, required: true, unique: true },
+  sectionTitle: { type: String, required: true },
   sectionDescription: { type: String },
   sectionImage: {
     type: mongoose.Schema.Types.ObjectId,
@@ -30,6 +30,8 @@ const SectionSchema = new Schema<ISection>({
     required: true,
   },
 });
+
+SectionSchema.index({ ownedBy: 1, sectionTitle: 1 }, { unique: true });
 
 const SectionModel: Model<ISection> = mongoose.model<ISection>(
   "Section",
