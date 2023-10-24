@@ -1,12 +1,32 @@
 import axios from "axios";
 import { API_BASE_URL } from "./../api/authApi";
+import { User } from "./../interfaces/companyTypes";
 
-// Function to fetch items
-export const fetchItems = async () => {
+// fetch users items
+
+export const fetchUsersItems = async (companyId: User | null) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/item/items`);
+    // Fetch the user's ID from your Redux state
+    const userId = companyId?._id;
+    console.log("items userId:", userId);
+    // Fetch items related to the user's ID
+    const response = await axios.get(
+      `${API_BASE_URL}/item/items?userId=${userId}`
+    );
     return response.data;
   } catch (error) {
+    throw error;
+  }
+};
+
+// Delete a single item
+export const deleteSingleItem = async (itemId: string) => {
+  try {
+    // Perform the delete operation for a single item
+    const response = await axios.delete(`${API_BASE_URL}/item/item/${itemId}`);
+    return response.data; // You can return the response data if needed
+  } catch (error) {
+    console.error("Error deleting item:", error);
     throw error;
   }
 };

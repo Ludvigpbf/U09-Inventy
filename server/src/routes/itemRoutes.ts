@@ -9,6 +9,7 @@ import {
   updateMultipleItems,
   deleteItemById,
   deleteMultipleItems,
+  getItemsForUser,
 } from "../controllers/itemController";
 import {
   isAuthenticated,
@@ -23,11 +24,19 @@ const itemRouter = express.Router();
 itemRouter.post("/item", /* isAuthenticated, */ createItem);
 itemRouter.post("/items", /*  isAuthenticated,  */ createMultipleItems);
 itemRouter.get(
-  "/items",
+  "/itemsen",
   /* isAuthenticated,
   isAuthorizedAllResources(ItemModel), */
   getAllItems
 );
+
+itemRouter.get(
+  "/items",
+  /* isAuthenticated,
+  isAuthorizedAllResources(ItemModel), */
+  getItemsForUser
+);
+
 itemRouter.get(
   "/item/:id",
   /*  isAuthenticated,

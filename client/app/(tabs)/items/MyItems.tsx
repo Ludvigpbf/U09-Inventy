@@ -9,13 +9,17 @@ import {
   TextInput,
 } from "react-native";
 import Checkbox from "expo-checkbox";
-
-import axios from "axios";
-import { API_BASE_URL } from "../../../api/authApi";
-import { fetchItems, deleteItems } from "../../../api/itemApi";
+import {
+  fetchUsersItems,
+  deleteItems,
+  deleteSingleItem,
+} from "../../../api/itemApi";
 import { Item } from "../../../interfaces/itemInterface";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Link } from "expo-router";
+import { useSelector } from "react-redux";
+import { User } from "../../../interfaces/companyTypes";
+import { RootState } from "../../store";
 
 const MyItems = () => {
   const [items, setItems] = useState<Item[]>([]);
@@ -26,6 +30,9 @@ const MyItems = () => {
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
+  const companyId: User | null = useSelector(
+    (state: RootState) => state.company.data
+  );
   /*   const [selectedItemForEdit, setSelectedItemForEdit] = useState<string>(null); */
 
   const handleSearch = (text: string) => {
@@ -59,36 +66,35 @@ const MyItems = () => {
     setSelectAllChecked(!selectAllChecked); // Toggle "Select All" checkbox state
   };
 
-  const handleDeleteItem = (ids: string | string[]) => {
+  const handleDeleteItem = async (ids: string | string[]) => {
     console.log("Selected items for deletion:", selectedItems);
+
+    const deleteItemsAndRefresh = async (itemIds: string[]) => {
+      try {
+        // Delete the selected items
+        const deletedItems = await deleteItems(itemIds);
+        console.log("Items deleted successfully:", deletedItems);
+
+        // Fetch the updated list of items
+        const updatedItems = await fetchUsersItems(companyId);
+        setItems(updatedItems);
+        console.log(updatedItems);
+      } catch (error) {
+        console.error("Error deleting or fetching items:", error);
+      }
+    };
+
     if (Array.isArray(ids)) {
-      deleteItems(ids)
-        .then((deletedItems) => {
-          console.log("Items deleted successfully:", deletedItems);
-          // Fetch items again to update the local state
-          fetchItems()
-            .then((data: Item[]) => {
-              setItems(data as Item[]);
-              console.log(data);
-            })
-            .catch((error) => {
-              console.error("Error fetching items:", error);
-            });
-        })
-        .catch((error) => {
-          console.error("Error deleting items:", error);
-        });
+      deleteItemsAndRefresh(ids);
     } else {
       // Handle single item deletion
-      axios
-        .delete(`${API_BASE_URL}/item/item/${ids}`)
-        .then(() => {
-          // Remove the deleted item from the local state
-          setItems((prevItems) => prevItems.filter((item) => item._id !== ids));
-        })
-        .catch((error) => {
-          console.error("Error deleting item:", error);
-        });
+      try {
+        await deleteSingleItem(ids); // Use the deleteSingleItem function
+        // Remove the deleted item from the local state
+        setItems((prevItems) => prevItems.filter((item) => item._id !== ids));
+      } catch (error) {
+        console.error("Error deleting item:", error);
+      }
     }
   };
 
@@ -101,17 +107,20 @@ const MyItems = () => {
     setItemsCheckedMenuVisible(false); // Close the menu
   };
 
+  const fetchItemsData = async () => {
+    try {
+      const userItems = await fetchUsersItems(companyId);
+      console.log("API Response:", userItems);
+      setItems(userItems);
+    } catch (error) {
+      console.error("Error fetching items:", error);
+    }
+  };
+
   useEffect(() => {
     // Fetch items when the component mounts
-    fetchItems()
-      .then((data: Item[]) => {
-        setItems(data as Item[]);
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching items:", error);
-      });
-  }, []);
+    fetchItemsData();
+  }, [companyId]);
 
   return (
     <View style={styles.container}>
@@ -335,9 +344,9 @@ const styles = StyleSheet.create({
   },
   suggestionsContainer: {
     position: "absolute",
-    top: 40, // Adjust this value for proper positioning
+    top: 40,
     left: 10,
-    width: 200, // Adjust the width as needed
+    width: 200,
     backgroundColor: "white",
     borderColor: "gray",
     borderWidth: 1,

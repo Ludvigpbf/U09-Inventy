@@ -32,6 +32,26 @@ export const getAllItems = async (req: Request, res: Response) => {
   }
 };
 
+export const getItemsForUser = async (req: Request, res: Response) => {
+  try {
+    // Extract the user's ID from the request query parameters
+    const userId = req.query.userId;
+
+    if (!userId) {
+      return res
+        .status(400)
+        .json({ error: "User ID is required in the query parameters" });
+    }
+
+    // Find items that are owned by the specified user
+    const items = await ItemModel.find({ ownedBy: userId });
+
+    res.json(items);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
 // Read a single item by ID
 export const getItemById = async (req: Request, res: Response) => {
   const { id } = req.params;

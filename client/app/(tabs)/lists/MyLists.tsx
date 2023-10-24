@@ -3,35 +3,35 @@ import { StyleSheet, Text, View, FlatList, TextInput } from "react-native";
 import { Link } from "expo-router";
 import axios from "axios";
 import { API_BASE_URL } from "../../../api/authApi";
+import { User } from "../../../interfaces/companyTypes";
+import { List } from "../../../interfaces/listInterface";
+import { fetchUserLists } from "../../../api/listApi";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 const MyLists = () => {
-  const [lists, setLists] = useState([
-    { _id: "1", listTitle: "Grocery List" },
-    { _id: "2", listTitle: "To-Do List" },
-    { _id: "3", listTitle: "Shopping List" },
-    // Add more dummy lists as needed
-  ]);
+  const [lists, setLists] = useState<List[]>([]);
 
-  /*  const [lists, setLists] = useState<{ _id: string; listTitle: string }[]>([]); */
+  const companyId: User | null = useSelector(
+    (state: RootState) => state.company.data
+  );
 
   const [searchQuery, setSearchQuery] = useState("");
 
-  const fetchLists = () => {
-    axios
-      .get(`${API_BASE_URL}/list/lists`)
-      .then((response) => {
-        setLists(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching lists:", error);
-      });
+  const fetchLists = async () => {
+    try {
+      const response = await fetchUserLists(companyId);
+      console.log("API Response:", response);
+      setLists(response);
+    } catch (error) {
+      console.error("Error fetching lists:", error);
+    }
   };
 
   useEffect(() => {
     fetchLists();
-  }, []);
+  }, [companyId]);
 
-  // Implement your search logic here
   const filteredLists = lists.filter((list) =>
     list.listTitle.toLowerCase().includes(searchQuery.toLowerCase())
   );

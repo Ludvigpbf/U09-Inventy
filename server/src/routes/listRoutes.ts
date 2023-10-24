@@ -1,11 +1,12 @@
 import express from "express";
 import {
   createList,
-  getAllLists,
+  /* getAllLists, */
   getListById,
   updateListById,
   deleteListById,
   getListByListTitle,
+  getListsForUser,
 } from "../controllers/listController";
 import {
   isAuthenticated,
@@ -22,7 +23,8 @@ listRouter.get(
   "/lists",
   /* isAuthenticated, */
   /*  isAuthorizedAllResources(ListModel), */
-  getAllLists
+  /* getAllLists, */
+  getListsForUser
 );
 listRouter.get(
   "/list/:id",
