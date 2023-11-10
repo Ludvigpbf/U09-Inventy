@@ -29,7 +29,7 @@ export const createList = async (req: Request, res: Response) => {
 export const getListsForUser = async (req: Request, res: Response) => {
   try {
     // Extract the user's ID from the request query parameters
-    const userId = req.query.userId;
+    const userId = req.query.ownedBy;
 
     if (!userId) {
       return res

@@ -1,6 +1,6 @@
 // companySlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { User } from "../interfaces/companyTypes";
+import { User } from "../../interfaces/companyTypes";
 
 const companySlice = createSlice({
   name: "company",

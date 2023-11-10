@@ -6,8 +6,10 @@ export const createItem = async (req: Request, res: Response) => {
   try {
     const newItem = await ItemModel.create(req.body);
     res.status(201).json(newItem);
+    console.log("newItem");
   } catch (error) {
     res.status(400).json({ error: (error as Error).message });
+    console.log(error);
   }
 };
 // Create multiple items

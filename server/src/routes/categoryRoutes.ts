@@ -17,7 +17,7 @@ import CategoryModel from "../models/Category";
 
 const categoryRouter = express.Router();
 
-categoryRouter.post("/category", isAuthenticated, createCategory);
+categoryRouter.post("/newCategory", /*  isAuthenticated, */ createCategory);
 categoryRouter.get(
   "/categories",
   /*  isAuthenticated,

@@ -1,3 +1,16 @@
+# Inventy - a inventory app for restaurants
+
+## Installing
+
+- Clone the repo to local
+- run: "npm install"
+
+## Running dev mode
+
+- cd into client root
+- type: "npm run start" to start the project
+- for web press "w", for mobile: scan the QR code
+
 **Views**
 
 - landing/login
@@ -67,7 +80,3 @@
     - statistics screen 3
   - \_layout
   - Dashboard
-
-styling på preview fungerar, password validering klar. ändrat unique true till enskilda users.
-PrivateRoute fungerar inte än, har börjat sätta upp.
-Behöver fixa crud på alla models.

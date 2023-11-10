@@ -5,8 +5,8 @@ import { Platform, Image, StyleSheet, View, Text } from "react-native";
 import LoginForm from "../components/LoginForm";
 import { router } from "expo-router";
 import { useDispatch } from "react-redux";
-import { setToken } from "./authSlice";
-import { setCompanyData } from "./companySlice";
+import { setToken } from "./slices/authSlice";
+import { setCompanyData } from "./slices/companySlice";
 import { fetchCompanyInfo, loginApiCall } from "../api/authApi";
 import jwtDecode from "jwt-decode";
 

@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useDispatch } from "react-redux";
-import { setToken } from "../app/authSlice";
+import { setToken } from "../app/slices/authSlice";
 import { loginApiCall } from "../api/authApi";
 
 import { Link } from "expo-router";

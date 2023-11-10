@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "../../../api/authApi";
-
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { User } from "../../../interfaces/companyTypes";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import { addItem, setItems } from "../../slices/itemSlice";
 
 const NewList: React.FC = () => {
+  const dispatch = useDispatch();
   const [listTitle, setListTitle] = useState<string>("");
   const [listDescription, setListDescription] = useState<string>("");
-  const [ownedBy, setOwnedBy] = useState<string>("");
   const [lists, setLists] = useState<any[]>([]); // State to store the retrieved lists
+
+  const companyData: User | null = useSelector(
+    (state: RootState) => state.company.data
+  );
 
   const newList = {
     listTitle: listTitle,
     listDescription: listDescription,
-    ownedBy: "650d97b2f719f5bc7e80dcd5",
+    ownedBy: companyData?._id || "",
   };
 
   const handleSubmit = () => {
@@ -24,6 +31,7 @@ const NewList: React.FC = () => {
       .post(`${API_BASE_URL}/list/list`, newList) // Replace with your actual API endpoint
       .then((response) => {
         console.log("List created successfully:", response.data);
+        dispatch(addItem(response.data));
         // You can add further logic here, e.g., clearing input fields or navigating to another screen.
         // After creating the list, you may also want to fetch the updated list of lists.
         fetchLists();
@@ -37,7 +45,7 @@ const NewList: React.FC = () => {
     axios
       .get(`${API_BASE_URL}/list/lists`, {
         params: {
-          ownedBy: "650d97b2f719f5bc7e80dcd5", // Replace with your actual user _id
+          ownedBy: companyData?._id, // Replace with your actual user _id
         },
       }) // Replace with your actual API endpoint
       .then((response) => {
@@ -46,6 +54,7 @@ const NewList: React.FC = () => {
       })
       .catch((error) => {
         console.error("Error fetching lists:", error);
+        console.log(companyData?._id);
       });
   };
 

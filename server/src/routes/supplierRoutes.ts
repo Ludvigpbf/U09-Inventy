@@ -17,7 +17,7 @@ import SupplierModel from "../models/Supplier";
 
 const supplierRouter = express.Router();
 
-supplierRouter.post("/supplier", isAuthenticated, createSupplier);
+supplierRouter.post("/newSupplier" /* , isAuthenticated */, createSupplier);
 supplierRouter.get(
   "/suppliers",
   /* isAuthenticated,

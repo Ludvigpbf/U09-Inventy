@@ -15,11 +15,6 @@ const Dashboard = () => {
     (state: RootState) => state.company.data
   );
 
-  const [items, setItems] = useState<Item[]>([
-    { id: 1, content: "Item 1" },
-    { id: 2, content: "Item 2" },
-    { id: 3, content: "Item 3" },
-  ]);
   return (
     <ScrollView contentContainerStyle={styles.containerColumn}>
       <View style={styles.containerRow}>
@@ -70,7 +65,7 @@ const Dashboard = () => {
           <Text>{companyData?.email}</Text>
         </View>
         <View style={styles.flatlistContainer}>
-          <FlatList
+          {/* <FlatList
             data={items}
             horizontal={true}
             renderItem={({ item }) => (
@@ -80,7 +75,7 @@ const Dashboard = () => {
               </View>
             )}
             keyExtractor={(item) => item.id.toString()}
-          />
+          /> */}
         </View>
         <View style={[styles.containerColumn, styles.background]}>
           <Link
@@ -88,12 +83,11 @@ const Dashboard = () => {
             style={styles.containerColumn}
           >
             <Text style={styles.title}>Last Period:</Text>
-            <View>
-              <Text>Section one</Text>
-              <Text>Section two</Text>
-              <Text>Section three</Text>
-              <Text>Section four</Text>
-            </View>
+            {companyData?.departments.map((department) => (
+              <View key={department._id}>
+                <Text>{department.department}</Text>
+              </View>
+            ))}
           </Link>
         </View>
         <View style={[styles.containerColumn, styles.background]}>
@@ -102,12 +96,11 @@ const Dashboard = () => {
             style={styles.containerColumn}
           >
             <Text style={styles.title}>Departments:</Text>
-            <View>
-              <Text>{companyData?.departments[0].department}</Text>
-              <Text>Section two</Text>
-              <Text>Section three</Text>
-              <Text>Section four</Text>
-            </View>
+            {companyData?.departments.map((department) => (
+              <View key={department._id}>
+                <Text>{department.department}</Text>
+              </View>
+            ))}
           </Link>
         </View>
       </View>

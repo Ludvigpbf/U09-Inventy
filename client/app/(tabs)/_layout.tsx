@@ -6,7 +6,7 @@ import Colors from "../../constants/Colors";
 import ModalScreen from "../Modal";
 import PrivateRoute from "../../components/PrivateRoute";
 import { useSelector } from "react-redux";
-import { selectIsAuthenticated } from "../authSlice";
+import { selectIsAuthenticated } from "../slices/authSlice";
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/

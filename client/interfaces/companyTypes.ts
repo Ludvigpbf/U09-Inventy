@@ -12,6 +12,7 @@ export interface User {
     phone: number;
   };
   departments: {
+    _id: string;
     department: string;
     manager: string;
   }[];

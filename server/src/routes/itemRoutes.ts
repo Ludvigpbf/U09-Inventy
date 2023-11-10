@@ -21,8 +21,8 @@ import ItemModel from "../models/Item";
 
 const itemRouter = express.Router();
 
-itemRouter.post("/item", /* isAuthenticated, */ createItem);
-itemRouter.post("/items", /*  isAuthenticated,  */ createMultipleItems);
+itemRouter.post("/newItem", /* isAuthenticated, */ createItem);
+itemRouter.post("/newItems", /*  isAuthenticated,  */ createMultipleItems);
 itemRouter.get(
   "/itemsen",
   /* isAuthenticated,

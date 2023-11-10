@@ -17,11 +17,13 @@ import {
 import { Item } from "../../../interfaces/itemInterface";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Link } from "expo-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { User } from "../../../interfaces/companyTypes";
 import { RootState } from "../../store";
+import { addItem, setItems } from "../../slices/itemSlice";
 
 const MyItems = () => {
+  const dispatch = useDispatch();
   const [items, setItems] = useState<Item[]>([]);
   const [isItemsCheckedMenuVisible, setItemsCheckedMenuVisible] =
     useState(false);
