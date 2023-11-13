@@ -1,7 +1,7 @@
 // authApi.ts
 import axios from "axios";
 
-export const API_BASE_URL = "http://localhost:3000";
+export const API_BASE_URL = "https://inventy-api.onrender.com";
 
 export const loginApiCall = async (credentials: {
   company: string;
