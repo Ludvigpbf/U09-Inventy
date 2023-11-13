@@ -52,7 +52,7 @@ const MyLists = () => {
         keyExtractor={(list) => list._id}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
-            <Link href={`/lists/Details/${item._id}`}>
+            <Link href={`/lists/${item._id}`}>
               <Text>{item.listTitle}</Text>
             </Link>
           </View>

@@ -6,6 +6,16 @@ import companyReducer from "./slices/companySlice";
 import supplierReducer from "./slices/supplierSlice";
 import itemReducer from "./slices/itemSlice";
 import categoryReducer from "./slices/categorySlice";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["auth"], // only auth will be persisted
+};
+
+const persistedReducer = persistReducer(persistConfig, authReducer);
 
 export interface CompanyState {
   data: User | null;
@@ -14,7 +24,7 @@ export interface CompanyState {
 
 const store = configureStore({
   reducer: {
-    auth: authReducer,
+    auth: persistedReducer,
     company: companyReducer,
     supplier: supplierReducer,
     item: itemReducer,
@@ -23,5 +33,7 @@ const store = configureStore({
 });
 
 export default store;
+
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;

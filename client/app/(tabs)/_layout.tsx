@@ -7,6 +7,7 @@ import ModalScreen from "../Modal";
 import PrivateRoute from "../../components/PrivateRoute";
 import { useSelector } from "react-redux";
 import { selectIsAuthenticated } from "../slices/authSlice";
+import LogoutButton from "../../components/Logout";
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -93,21 +94,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <Ionicons name="ios-home-outline" size={24} color={color} />
           ),
-          headerRight: () => (
-            <Link href="/AccountSettings" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <Ionicons
-                    name="ios-menu-outline"
-                    size={24}
-                    /*  color={Colors[colorScheme ?? "light"].text} */
-                    color={"black"}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
+          headerRight: () => <LogoutButton />,
         }}
       />
 

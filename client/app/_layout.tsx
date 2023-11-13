@@ -6,11 +6,12 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
   ThemeProvider,
 } from "@react-navigation/native"; */
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
+import { SplashScreen, Stack, router } from "expo-router";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { Provider, useSelector } from "react-redux";
-import store from "./store";
+import { PersistGate } from "redux-persist/integration/react";
+import store, { persistor } from "./store";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -46,22 +47,37 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <RootLayoutNav />
+      </PersistGate>
+    </Provider>
+  );
 }
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
+  const token = useSelector(
+    (state: { auth: { token: string } }) => state.auth.token
+  );
+
+  useEffect(() => {
+    if (!token) {
+      router.replace(`/`);
+    }
+  }, [token, router]);
+
   return (
     /*    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}> */
-    <Provider store={store}>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="register" options={{ headerShown: false }} />
 
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack>
-    </Provider>
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="register" options={{ headerShown: false }} />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+    </Stack>
+
     /*  </ThemeProvider> */
   );
 }

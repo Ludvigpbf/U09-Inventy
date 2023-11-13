@@ -186,12 +186,8 @@ const MyItems = () => {
             >
               <View style={styles.modalContainer}>
                 {/* Your menu options go here */}
-                <Link
-                  href={{
-                    pathname: "/items/UpdateItem",
-
-                    params: { selectedItemId: item._id },
-                  }}
+                {/*  <Link
+                  href={`/items/UpdateItem/${item._id}`}
                   style={styles.modalContent}
                 >
                   <Ionicons
@@ -200,7 +196,7 @@ const MyItems = () => {
                     color="white"
                   />
                   <Text style={styles.modalText}>Edit item</Text>
-                </Link>
+                </Link> */}
                 <Pressable style={styles.modalContent}>
                   <Ionicons
                     name="ios-arrow-forward-circle-outline"
@@ -227,9 +223,9 @@ const MyItems = () => {
           <Pressable onPress={() => handleDeleteItem(selectedItems)}>
             <Text style={styles.dropdownBtn}>Delete</Text>
           </Pressable>
-          <Pressable onPress={handleAddToList}>
+          {/*  <Pressable onPress={handleAddToList}>
             <Text style={styles.dropdownBtn}>Add to Lists</Text>
-          </Pressable>
+          </Pressable> */}
         </View>
       ) : null}
     </View>

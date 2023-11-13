@@ -188,13 +188,13 @@ const NewItem = () => {
         onChangeText={(text) => setPrice(text)}
         keyboardType="numeric"
       />
-      <Text>Image</Text>
+      {/*  <Text>Image</Text>
       <TextInput
         style={styles.input}
         placeholder="Image"
         value={image}
         onChangeText={(text) => setImage(text)}
-      />
+      /> */}
       <NewCategory />
       <View style={styles.dropdownContainer}>
         <Text>Select Category:</Text>

@@ -38,7 +38,7 @@ const Billing = () => {
     }
   };
   const validatePhone = (value: string) => {
-    const phoneRegex = /^[+]+[0-9]{8,12}$/;
+    const phoneRegex = /^[0-9]{8,12}$/;
     if (!phoneRegex.test(value)) {
       setPhoneError("Invalid phone number");
       return;

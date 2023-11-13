@@ -5,7 +5,7 @@ export default () => {
     <Stack>
       <Stack.Screen name="MyItems" options={{ headerShown: false }} />
       <Stack.Screen name="NewItem" options={{ headerShown: false }} />
-      <Stack.Screen name="UpdateItem" options={{ headerShown: false }} />
+      <Stack.Screen name="UpdateItem/:id" options={{ headerShown: false }} />
     </Stack>
   );
 };

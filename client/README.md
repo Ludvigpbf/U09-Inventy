@@ -9,7 +9,8 @@
 
 - cd into client root
 - type: "npm run start" to start the project
-- for web press "w", for mobile: scan the QR code
+- for web: press "w"
+- for mobile: scan the QR code
 
 **Views**
 
@@ -18,45 +19,53 @@
   - choose plan
   - choose paymentsolution
   - add billing info
-  - terms & conditions
-- forgot password
+  - ~~terms & conditions~~(not active)
+- ~~forgot password~~(not active)
 - dasboard
 
-  - new inventory
+  - ~~new inventory~~(not active)
   - my lists
     - new list
-      - add items
-    - edit lists
+      - add list
+        - ~~add item~~(not active)
+          - ~~add category(component)~~(not active)
+          - ~~add supplier(component)~~(not active)
+    - ~~edit lists~~(not active)
     - search list
     - delete list
   - my items
     - new item
-    - import items
-    - edit item
+      - add item
+        - add category(component)
+        - add supplier(component)
+    - ~~import items~~(not active)
+    - ~~edit item~~(not active)
     - delete item
     - search item
   - statistics
-    - history
-    - reports
-  - receipt's
-    - add receipt's
-    - delete receipt's
-    - import receipt's
-    - export receipt's
+    - ~~history~~(not active)
+    - ~~reports~~(not active)
+  - ~~receipt's~~(not active)
+    - ~~add receipt's~~(not active)
+    - ~~delete receipt's~~(not active)
+    - ~~import receipt's~~(not active)
+    - ~~export receipt's~~(not active)
   - settings
-    - account settings
-      - update username
-      - update password
-      - update email
-    - billing information
-      - edit billing information
-    - language
-      - change language
-    - dark/light mode
-    - contact
-      - mail
-      - phone
+    - ~~account settings~~(not active)
+      - ~~update username~~(not active)
+      - ~~update password~~(not active)
+      - ~~update email~~(not active)
+    - ~~billing information~~(not active)
+      - ~~edit billing information~~(not active)
+    - ~~language~~(not active)
+      - ~~change language~~(not active)
+    - ~~dark/light mode~~(not active)
+    - ~~contact~~(not active)
+      - ~~mail~~(not active)
+      - ~~phone~~(not active)
 
+
+## Hierarchy map
 - (tabs)
   - items
     - items screen 1
@@ -78,5 +87,5 @@
     - statistics screen 1
     - statistics screen 2
     - statistics screen 3
-  - \_layout
+  - _layout
   - Dashboard

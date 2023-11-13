@@ -1,19 +1,54 @@
 import { StyleSheet, Text, View, FlatList, ScrollView } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocalSearchParams } from "expo-router";
 import { RootState } from "../store";
 import { useSelector } from "react-redux";
 import { User } from "../../interfaces/companyTypes";
 import { Ionicons } from "@expo/vector-icons";
-type Item = {
-  id: number;
-  content: string;
-};
+import axios from "axios";
+import { API_BASE_URL } from "../../api/authApi";
+import { Item } from "../../interfaces/itemInterface";
+import { fetchUsersItems } from "../../api/itemApi";
 
 const Dashboard = () => {
   const companyData: User | null = useSelector(
     (state: RootState) => state.company.data
   );
+
+  const [lists, setLists] = useState<any[]>([]); // State to store the retrieved lists
+  const [items, setItems] = useState<Item[]>([]);
+  const fetchLists = () => {
+    axios
+      .get(`${API_BASE_URL}/list/lists`, {
+        params: {
+          ownedBy: companyData?._id, // Replace with your actual user _id
+        },
+      }) // Replace with your actual API endpoint
+      .then((response) => {
+        setLists(response.data);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error("Error fetching lists:", error);
+        console.log(companyData?._id);
+      });
+  };
+
+  const fetchItems = async () => {
+    try {
+      const items = await fetchUsersItems(companyData);
+      setItems(items);
+    } catch (error) {
+      console.error("Error fetching items:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (companyData) {
+      fetchLists();
+      fetchItems();
+    }
+  }, [companyData]);
 
   return (
     <ScrollView contentContainerStyle={styles.containerColumn}>
@@ -82,10 +117,29 @@ const Dashboard = () => {
             href="/(tabs)/statistics/Statistic"
             style={styles.containerColumn}
           >
-            <Text style={styles.title}>Last Period:</Text>
-            {companyData?.departments.map((department) => (
-              <View key={department._id}>
-                <Text>{department.department}</Text>
+            <Text style={styles.title}>Lists:</Text>
+            {lists.map((list) => (
+              <View key={list._id}>
+                <Text>{list.listTitle}</Text>
+              </View>
+            ))}
+          </Link>
+        </View>
+        <View style={[styles.containerColumn, styles.background]}>
+          <Link
+            href="/(tabs)/statistics/Statistic"
+            style={styles.containerColumn}
+          >
+            <Text style={styles.title}>Items:</Text>
+            {items.map((item) => (
+              <View key={item._id}>
+                <View style={styles.itemContainer}>
+                  <Text>{item.itemTitle}</Text>
+                  <View style={styles.itemDataContainer}>
+                    <Text>{item.itemQuantity}</Text>
+                    <Text>{item.itemUnit}</Text>
+                  </View>
+                </View>
               </View>
             ))}
           </Link>
@@ -191,5 +245,15 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
+  },
+  itemContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
+  itemDataContainer: {
+    flex: 0.5,
+    flexDirection: "row",
   },
 });

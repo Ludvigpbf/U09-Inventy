@@ -1,5 +1,5 @@
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
 import { UserData } from "./actions"; // Import the UserData interface
@@ -8,10 +8,11 @@ import axios from "axios";
 import { router } from "expo-router";
 
 const Preview = () => {
-  // Use the useSelector hook to access the user data
   const userData: UserData | null = useSelector(
     (state: RootState) => state.user
   );
+
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Create a function to filter out sensitive data (e.g., password)
   const getSafeUserData = (userData: UserData | null): UserData | null => {
@@ -32,9 +33,18 @@ const Preview = () => {
       // Make a POST request to your backend API
       const response = await axios.post(`${API_BASE_URL}/user/user`, userData);
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       // Handle errors
       console.error("Error creating user:", error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setErrorMessage(error.response.data.message);
+      } else {
+        setErrorMessage("Something whent wrong. Please try again.");
+      }
       throw error;
     }
   };
@@ -55,12 +65,15 @@ const Preview = () => {
       try {
         const createdUser = await createUser(userDataToCreate);
         console.log("User created on the server:", createdUser);
+        alert("User created successfully!");
         router.replace(`/`);
         // Navigate to the next screen or handle the response as needed
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error creating user:", error);
+        setErrorMessage("Something whent wrong. Please try again.");
       }
     } else {
+      setErrorMessage("User data is missing. Please fill in all fields.");
       console.error("userData is null.");
       // Handle the case where userData is null
     }
@@ -69,6 +82,7 @@ const Preview = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.pageNumber}>4/4</Text>
+      {errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
       {safeUserData && ( // Check if safeUserData is not null
         <View style={styles.previewContainer}>
           <View style={styles.propValueContainer}>
@@ -176,6 +190,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     width: 140,
+  },
+  error: {
+    color: "red",
+    marginBottom: 10,
   },
 });
 
